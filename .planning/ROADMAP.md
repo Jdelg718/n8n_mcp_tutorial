@@ -8,76 +8,36 @@ Build a comprehensive meal tracking SaaS from foundation to deployment. Starting
 
 None
 
+## Milestones
+
+- ✅ **[v1.0 MVP](milestones/v1.0-ROADMAP.md)** — Phases 1-5 (shipped 2026-01-12)
+- 📋 **v2.0 Feature Complete** — Phases 6-8 (planned)
+
+## Completed Milestones
+
+- ✅ [v1.0 MVP](milestones/v1.0-ROADMAP.md) (Phases 1-5) — SHIPPED 2026-01-12
+
 ## Phases
 
-- [x] **Phase 1: Foundation & Database** - Next.js 14 setup, Supabase integration, authentication, database schema with RLS
-- [x] **Phase 2: Meal Logging System** - Manual entry forms, image upload, AI analysis (text + images), edit/delete functionality
-- [x] **Phase 3: Telegram Integration** - n8n webhook integration, real-time meal sync, source tracking
-- [x] **Phase 4: Dashboard & Meals** - Dashboard view with today's totals, meals list page with filters and real-time updates
-- [ ] **Phase 5: Analytics & Insights** - Charts, trends, time-based analysis, AI-generated insights
+<details>
+<summary>✅ v1.0 MVP (Phases 1-5) — SHIPPED 2026-01-12</summary>
+
+- [x] Phase 1: Foundation & Database (3/3 plans) — completed 2026-01-12
+- [x] Phase 2: Meal Logging System (5/5 plans) — completed 2026-01-12
+- [x] Phase 3: Telegram Integration (1/1 plan) — completed 2026-01-12
+- [x] Phase 4: Dashboard & Meals (2/2 plans) — completed 2026-01-12
+- [x] Phase 5: Analytics & Insights (3/3 plans) — completed 2026-01-12
+
+</details>
+
+### 📋 v2.0 Feature Complete (Phases 6-8)
 - [ ] **Phase 6: Health App Integration** - Terra API setup, Apple Health/Google Fit sync, health data display
 - [ ] **Phase 7: Settings & Profile** - User settings, goals management, integrations, theme toggle
 - [ ] **Phase 8: Landing Page & Deployment** - Marketing landing page, Vercel deployment, production optimization
 
 ## Phase Details
 
-### Phase 1: Foundation & Database
-**Goal**: Establish Next.js application infrastructure with Supabase backend, authentication system, and complete database schema with security policies
-**Depends on**: Nothing (first phase)
-**Research**: Completed (DISCOVERY.md created)
-**Research topics**: Next.js 14 App Router patterns, Supabase RLS best practices, authentication flow with Supabase Auth
-**Plans**: 3
-
-Plans:
-- [x] 01-01: Project Setup & Supabase Configuration (2 tasks) — Complete
-- [x] 01-02: Database Schema & Security (2 tasks) — Complete
-- [x] 01-03: Authentication System (3 tasks + 1 checkpoint) — Complete
-
-### Phase 2: Meal Logging System
-**Goal**: Build complete meal entry system with manual forms, image uploads, and AI-powered nutrition analysis
-**Depends on**: Phase 1
-**Research**: Completed (02-RESEARCH.md created)
-**Research topics**: OpenRouter API integration, GPT-4o-mini and GPT-4 Vision usage, image upload optimization with Supabase Storage
-**Plans**: 5
-
-Plans:
-- [x] 02-01: Storage & AI Infrastructure (3 tasks) — Complete
-- [x] 02-02: Manual Meal Entry Form (3 tasks) — Complete
-- [x] 02-03: Image Upload & Compression (3 tasks) — Complete
-- [x] 02-04: AI Nutrition Analysis (3 tasks) — Complete
-- [x] 02-05: Edit & Delete Functionality (4 tasks + 1 checkpoint) — Complete
-
-### Phase 3: Telegram Integration
-**Goal**: Connect existing n8n Telegram bot to web app with real-time meal synchronization
-**Depends on**: Phase 2
-**Research**: Completed (direct webhook implementation)
-**Plans**: 1
-
-Plans:
-- [x] 03-01: Telegram Webhook Integration (1 task + 2 checkpoints) — Complete
-
-### Phase 4: Dashboard & Meals
-**Goal**: Create dashboard with today's nutrition totals and meals browsing page with filters
-**Depends on**: Phase 2
-**Research**: Unlikely (internal UI using established patterns from earlier phases)
-**Status**: Complete
-**Plans**: 2
-
-Plans:
-- [x] 04-01: Dashboard with Today's Totals (3 tasks) — Complete
-- [x] 04-02: Meals Filtering & Pagination (3 tasks) — Complete
-
-### Phase 5: Analytics & Insights
-**Goal**: Build analytics page with charts, trends, and AI-generated nutrition insights
-**Depends on**: Phase 4
-**Research**: Unlikely (Recharts library, internal data visualization patterns)
-**Status**: Complete
-**Plans**: 3
-
-Plans:
-- [x] 05-01: Analytics Infrastructure & Time Range Selector (3 tasks) — Complete
-- [x] 05-02: Nutrition Trends Charts (3 tasks) — Complete
-- [x] 05-03: AI-Generated Insights (3 tasks) — Complete
+_See [v1.0 MVP Archive](milestones/v1.0-ROADMAP.md) for completed Phases 1-5 details._
 
 ### Phase 6: Health App Integration
 **Goal**: Integrate Terra API to sync Apple Health and Google Fit data with dashboard display
@@ -113,13 +73,20 @@ Plans:
 **Execution Order:**
 Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Foundation & Database | 3/3 | Complete | 2026-01-12 |
-| 2. Meal Logging System | 5/5 | Complete | 2026-01-12 |
-| 3. Telegram Integration | 1/1 | Complete | 2026-01-12 |
-| 4. Dashboard & Meals | 2/2 | Complete | 2026-01-12 |
-| 5. Analytics & Insights | 3/3 | Complete | 2026-01-12 |
-| 6. Health App Integration | 0/TBD | Not started | - |
-| 7. Settings & Profile | 0/TBD | Not started | - |
-| 8. Landing Page & Deployment | 0/TBD | Not started | - |
+**Milestone: v1.0 MVP (Phases 1-5) — ✅ SHIPPED**
+
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Foundation & Database | v1.0 | 3/3 | Complete | 2026-01-12 |
+| 2. Meal Logging System | v1.0 | 5/5 | Complete | 2026-01-12 |
+| 3. Telegram Integration | v1.0 | 1/1 | Complete | 2026-01-12 |
+| 4. Dashboard & Meals | v1.0 | 2/2 | Complete | 2026-01-12 |
+| 5. Analytics & Insights | v1.0 | 3/3 | Complete | 2026-01-12 |
+
+**Milestone: v2.0 Feature Complete (Phases 6-8) — 📋 PLANNED**
+
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 6. Health App Integration | v2.0 | 0/TBD | Not started | - |
+| 7. Settings & Profile | v2.0 | 0/TBD | Not started | - |
+| 8. Landing Page & Deployment | v2.0 | 0/TBD | Not started | - |

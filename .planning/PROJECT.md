@@ -12,61 +12,63 @@ Dashboard insights must be exceptional - beautiful, actionable visualizations of
 
 ### Validated
 
-(None yet - ship to validate)
+- ✓ Email/password authentication via Supabase Auth — v1.0
+- ✓ OAuth providers (Google) — v1.0
+- ✓ User profile management (basic) — v1.0
+- ✓ Manual meal entry form with validation (Zod + React Hook Form) — v1.0
+- ✓ Meal type classification (breakfast, lunch, dinner, snack) — v1.0
+- ✓ Image upload to Supabase Storage — v1.0
+- ✓ AI text analysis via OpenRouter (GPT-4o-mini) — v1.0
+- ✓ AI image analysis via OpenRouter (GPT-4o) — v1.0
+- ✓ Nutrition data capture (calories, protein, carbs, fat, fiber, sugar, sodium) — v1.0
+- ✓ Confidence scoring for AI analysis — v1.0
+- ✓ Edit and delete meal entries — v1.0
+- ✓ n8n webhook integration for Telegram bot — v1.0
+- ✓ Real-time meal sync from Telegram to web app — v1.0
+- ✓ Source tracking (manual, Telegram text, Telegram image, web) — v1.0
+- ✓ Today's nutrition totals (calories, protein, carbs, fat) — v1.0
+- ✓ Progress bars vs daily goals — v1.0
+- ✓ Recent meals list with images — v1.0
+- ✓ Real-time updates via Supabase Realtime — v1.0
+- ✓ Date range filter — v1.0
+- ✓ Meal type filter — v1.0
+- ✓ Search functionality — v1.0
+- ✓ Pagination — v1.0
+- ✓ Time range selector (7d, 30d, 90d, all time) — v1.0
+- ✓ Summary stats (total meals, avg calories) — v1.0
+- ✓ Calorie trends line chart (Recharts) — v1.0
+- ✓ Macro distribution pie chart — v1.0
+- ✓ AI-generated insights panel — v1.0
+- ✓ Pattern detection — v1.0
+- ✓ Supabase database schema with RLS — v1.0
+- ✓ Server Actions for mutations — v1.0
+- ✓ Next.js 14 App Router with Server Components — v1.0
+- ✓ TypeScript throughout — v1.0
+- ✓ Shadcn/ui component library — v1.0
+- ✓ Tailwind CSS styling — v1.0
+- ✓ Image optimization (compression, WebP) — v1.0
+- ✓ Error handling and loading states — v1.0
+- ✓ Input validation (client and server) — v1.0
 
 ### Active
 
 **Authentication & User Management**
-- [ ] Email/password authentication via Supabase Auth
-- [ ] OAuth providers (Google, Apple)
+- [ ] Apple OAuth configuration (Google already working)
 - [ ] Telegram login widget integration
-- [ ] User profile management (avatar, goals, preferences)
+- [ ] Enhanced user profile management (avatar upload, goals, preferences)
 - [ ] Timezone and measurement system preferences
 
-**Meal Logging**
-- [ ] Manual meal entry form with validation (Zod + React Hook Form)
-- [ ] Meal type classification (breakfast, lunch, dinner, snack)
-- [ ] Image upload to Supabase Storage
-- [ ] AI text analysis via OpenRouter (GPT-4o-mini)
-- [ ] AI image analysis via OpenRouter (GPT-4 Vision)
-- [ ] Nutrition data capture (calories, protein, carbs, fat, fiber, sugar, sodium)
-- [ ] Confidence scoring for AI analysis
-- [ ] Edit and delete meal entries
-
-**Telegram Integration**
-- [ ] n8n webhook integration for Telegram bot
-- [ ] Real-time meal sync from Telegram to web app
-- [ ] Source tracking (manual, Telegram text, Telegram image, web)
-- [ ] Telegram account linking in settings
-
 **Dashboard**
-- [ ] Today's nutrition totals (calories, protein, carbs, fat)
-- [ ] Progress bars vs daily goals
-- [ ] Recent meals list with images
 - [ ] Quick add meal button
-- [ ] Weekly trend chart
+- [ ] Weekly trend chart widget
 - [ ] Daily streak counter
-- [ ] Real-time updates via Supabase Realtime
 
 **Meals Page**
-- [ ] Date range filter
-- [ ] Meal type filter
-- [ ] Search functionality
 - [ ] Calendar view toggle
-- [ ] List view with meal cards
-- [ ] Edit/delete actions
-- [ ] Pagination
-- [ ] Meal card with thumbnail, name, time, calories, macros
 
 **Analytics Page**
-- [ ] Time range selector (7d, 30d, 90d, all time)
-- [ ] Summary stats (total meals, avg calories)
-- [ ] Calorie trends line chart (Recharts)
-- [ ] Macro distribution pie chart
 - [ ] Meal timing heatmap
 - [ ] Goal progress visualization
-- [ ] AI-generated insights panel
-- [ ] Pattern detection
 - [ ] Achievement system
 
 **Health App Integration**
@@ -94,46 +96,24 @@ Dashboard insights must be exceptional - beautiful, actionable visualizations of
 - [ ] Footer with links and social media
 
 **Database & Backend**
-- [ ] Supabase database schema (users, meal_logs, health_data, goals tables)
-- [ ] Row Level Security (RLS) policies
-- [ ] Database indexes for performance
-- [ ] Triggers for updated_at timestamps
-- [ ] get_daily_totals() function for analytics
-- [ ] Supabase Edge Functions for API endpoints
-- [ ] Server Actions for mutations
+- [ ] Health data tables and RLS policies
+- [ ] Goals table and user preferences
+- [ ] Additional database indexes as needed
 
 **Technical Infrastructure**
-- [ ] Next.js 14 App Router with Server Components
-- [ ] TypeScript throughout
-- [ ] Shadcn/ui component library
-- [ ] Tailwind CSS styling
-- [ ] React Query for server state
-- [ ] Zustand for client state
-- [ ] Image optimization (Next.js Image, WebP, lazy loading)
-- [ ] Code splitting and dynamic imports
-- [ ] Error handling and loading states
-- [ ] Input validation (client and server)
+- [ ] React Query for server state (if needed)
+- [ ] Zustand for client state (if needed)
+- [ ] Code splitting and dynamic imports (optimization phase)
 
 **Security & Performance**
-- [ ] HTTPS only (Vercel automatic)
-- [ ] JWT tokens with refresh
-- [ ] CSRF protection
-- [ ] RLS policies on all tables
-- [ ] Secure headers configuration
-- [ ] Response compression
-- [ ] Rate limiting on API routes
-- [ ] Optimized database queries with indexes
-- [ ] Connection pooling
+- [ ] Rate limiting on API routes (add if needed)
+- [ ] Performance optimization pass
 
 **Deployment & DevOps**
-- [ ] Vercel deployment configuration
-- [ ] Environment variables setup
 - [ ] Custom domain configuration
-- [ ] CDN delivery (Vercel Edge)
-- [ ] Error tracking setup
+- [ ] Error tracking setup (Sentry or similar)
 - [ ] Analytics configuration
-- [ ] Database migrations
-- [ ] Backup strategy
+- [ ] Database backup strategy
 
 ### Out of Scope
 
@@ -141,19 +121,35 @@ Dashboard insights must be exceptional - beautiful, actionable visualizations of
 
 ## Context
 
-**Existing Infrastructure:**
-- Supabase project already provisioned and configured
-- OpenRouter API account with access to GPT-4o-mini and GPT-4 Vision
-- Working n8n Telegram bot workflow that needs to integrate with the web app
-- Terra API will be used for health app integrations (provides unified interface to Apple Health, Google Fit, and other platforms)
+**Current State (v1.0 MVP Shipped):**
+- 5,313 lines of TypeScript/TSX/SQL code
+- 97 files across Next.js 14 app structure
+- Fully functional meal tracking with AI-powered nutrition analysis
+- Telegram bot integration via n8n webhooks (deployed to Vercel)
+- Real-time dashboard with today's totals and progress tracking
+- Complete analytics page with charts and AI-generated insights
+- All data secured with Supabase RLS policies
 
-**Technical Environment:**
-- Next.js 14 with App Router and Server Components for modern React patterns
-- TypeScript for type safety throughout the stack
-- Shadcn/ui provides accessible, customizable components built on Radix UI
-- Supabase handles database (PostgreSQL), authentication, file storage, and real-time subscriptions
-- OpenRouter provides access to latest AI models without vendor lock-in
-- Vercel provides optimal Next.js hosting with automatic optimizations
+**Tech Stack:**
+- Next.js 14 with App Router and Server Components
+- TypeScript throughout
+- Supabase (PostgreSQL, Auth, Storage, Realtime)
+- OpenRouter API (GPT-4o for images, GPT-4o-mini for text)
+- Shadcn/ui component library with Tailwind CSS
+- Recharts for data visualization
+- n8n for Telegram bot integration
+- Deployed on Vercel
+
+**User Feedback & Observations:**
+- Core functionality working well: meal logging, AI analysis, dashboard views
+- Analytics insights provide meaningful patterns (as intended - core value delivered)
+- Telegram integration smooth with real-time sync
+- Need to add: health app data, user-customizable goals, settings page
+
+**Known Issues:**
+- Goals are hardcoded (2000 kcal, 150g protein, 250g carbs, 67g fat) - Phase 7 will add user customization
+- No health app integration yet (Terra API integration planned for Phase 6)
+- Landing page not yet created (Phase 8)
 
 **Target Users:**
 - Primary: Personal use for daily meal tracking and nutrition insights
@@ -164,8 +160,8 @@ Dashboard insights must be exceptional - beautiful, actionable visualizations of
 - Mobile-first responsive design
 - Clean, modern UI with focus on data visualization
 - Fast, intuitive interactions
-- Real-time updates feel essential for good UX
-- AI should feel magical but confidence scores keep it honest
+- Real-time updates essential for good UX
+- AI analysis with confidence scores for transparency
 
 ## Constraints
 
@@ -179,12 +175,21 @@ Dashboard insights must be exceptional - beautiful, actionable visualizations of
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Vercel deployment over VPS | Easiest Next.js hosting with automatic SSL, global CDN, zero config deploys, generous free tier | — Pending |
-| Terra API for health integrations | Unified API for Apple Health and Google Fit without building native mobile app, handles OAuth complexity | — Pending |
-| OpenRouter for AI models | Access to latest models (GPT-4o-mini for text, GPT-4 Vision for images) without vendor lock-in, competitive pricing | — Pending |
-| Comprehensive v1 without payments | Build full feature set to validate complete user experience before adding monetization complexity | — Pending |
-| Supabase for backend | Single service handles database, auth, storage, real-time - reduces integration complexity and operational overhead | — Pending |
-| Shadcn/ui over component library | Copy-paste components provide full customization without library lock-in, built on accessible Radix primitives | — Pending |
+| Vercel deployment over VPS | Easiest Next.js hosting with automatic SSL, global CDN, zero config deploys, generous free tier | ✓ Good - Deployed successfully, zero config |
+| OpenRouter for AI models | Access to latest models (GPT-4o for images, GPT-4o-mini for text) without vendor lock-in, competitive pricing | ✓ Good - Cost-effective, reliable API |
+| GPT-4o (not mini) for image analysis | GPT-4o-mini uses 20-33x more tokens for vision, costs same as GPT-4o | ✓ Good - Significant cost savings |
+| GPT-4o-mini for text-only analysis | 33x cheaper than GPT-4o for text descriptions | ✓ Good - Optimized costs |
+| Supabase for backend | Single service handles database, auth, storage, real-time - reduces integration complexity and operational overhead | ✓ Good - Seamless integration, RLS working well |
+| Shadcn/ui over component library | Copy-paste components provide full customization without library lock-in, built on accessible Radix primitives | ✓ Good - Full control, consistent design |
+| Server Actions with useActionState | Progressive enhancement, loading states, automatic error handling | ✓ Good - Clean pattern, great DX |
+| Bearer token auth for webhooks | Simple shared secret for v1 webhook authentication | ✓ Good - Secure and simple |
+| Client-side image compression | Compress to 1200px/0.8 quality/WebP before upload | ✓ Good - Reduced storage costs |
+| Signed URLs for image upload | Bypasses 1MB Server Action limit | ✓ Good - Enables large image uploads |
+| URL search params for UI state | Enables browser back/forward, shareable URLs | ✓ Good - Better UX than client state |
+| Avoid route groups in Next.js 16 | Route groups cause 404s with Turbopack | ⚠️ Workaround - Fixed by removing route groups |
+| Recharts for analytics | Mature charting library with good React integration | ✓ Good - Clean charts, responsive |
+| Comprehensive v1 without payments | Build full feature set to validate complete user experience before adding monetization complexity | — Pending v2 |
+| Terra API for health integrations | Unified API for Apple Health and Google Fit without building native mobile app, handles OAuth complexity | — Pending Phase 6 |
 
 ---
-*Last updated: 2026-01-11 after initialization*
+*Last updated: 2026-01-12 after v1.0 milestone completion*
