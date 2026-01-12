@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { format } from 'date-fns'
 import type { Meal } from '@/types/meal'
+import { DeleteButton } from '@/components/meals/DeleteButton'
 
 export default async function MealsPage() {
   const supabase = await createClient()
@@ -102,6 +103,17 @@ export default async function MealsPage() {
                           Manual
                         </span>
                       )}
+                    </div>
+
+                    {/* Edit and Delete actions */}
+                    <div className="mt-3 flex items-center gap-4">
+                      <Link
+                        href={`/dashboard/meals/${meal.id}/edit`}
+                        className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      >
+                        Edit
+                      </Link>
+                      <DeleteButton mealId={meal.id} />
                     </div>
                   </div>
                 </div>
