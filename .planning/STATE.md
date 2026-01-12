@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-11)
 
 ## Current Position
 
-Phase: 4 of 8 (Dashboard & Meals)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-01-12 — Completed 04-02-PLAN.md (Meals Filtering & Pagination)
+Phase: 5 of 8 (Analytics & Insights)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-01-12 — Completed 05-01-PLAN.md (Analytics Infrastructure & Time Range Selector)
 
-Progress: ████████████░ 92% (11/12 plans)
+Progress: █████████████ 100% (12/12 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
-- Average duration: 15 min
-- Total execution time: 2.8 hours
+- Total plans completed: 12
+- Average duration: 16 min
+- Total execution time: 3.1 hours
 
 **By Phase:**
 
@@ -31,10 +31,11 @@ Progress: ████████████░ 92% (11/12 plans)
 | 2 | 5 | 64 min | 13 min |
 | 3 (✅) | 1 | 2 min | 2 min |
 | 4 (✅) | 2 | 48 min | 24 min |
+| 5 | 1 | 6 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 19 min, 19 min, 2 min, 3 min, 45 min
-- Trend: Complex UI features with multiple components take longer (45 min for filtering + pagination)
+- Last 5 plans: 19 min, 2 min, 3 min, 45 min, 6 min
+- Trend: Foundation plans with new libraries are fast (6 min for analytics infrastructure)
 
 ## Accumulated Context
 
@@ -75,6 +76,10 @@ Recent decisions affecting current work:
 | 04 | 500ms debounce on search input | Reduces database queries while typing, improves performance |
 | 04 | Page size of 20 meals | Balance between showing enough content and query performance |
 | 04 | Reset to page 1 on filter changes | Better UX than potentially showing empty results on later pages |
+| 05 | Time range calculation with date-fns | Use startOfDay for consistent date boundaries, more reliable than manual manipulation |
+| 05 | Daily averages for analytics | More meaningful insight than per-meal averages for nutrition tracking |
+| 05 | "All Time" limit of 2 years | Practical performance limit, prevents unbounded queries |
+| 05 | Display 4 key metrics (not fat) | Total Meals, Avg Calories, Avg Protein, Avg Carbs - omit fat for space in responsive grid |
 
 ### Deferred Issues
 
@@ -87,7 +92,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-12
-Stopped at: Completed 04-02-PLAN.md — Meals filtering and pagination
+Stopped at: Completed 05-01-PLAN.md — Analytics infrastructure with time range selector
 Resume file: None
 
 ## Recent Progress
@@ -104,4 +109,8 @@ Resume file: None
 - ✅ Pagination with 20 meals per page
 - ✅ URL state management for browser navigation
 
-**Ready for Phase 5:** Analytics & Insights (charts, trends, AI-generated insights)
+**Phase 5 In Progress:**
+- ✅ Analytics page foundation with Recharts library
+- ✅ Time range selector (Today, 7/30/90 Days, All Time)
+- ✅ Summary stats cards with key metrics
+- 🔄 Next: Nutrition trends charts (line charts and macro pie chart)

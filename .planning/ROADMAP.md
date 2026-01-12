@@ -13,7 +13,7 @@ None
 - [x] **Phase 1: Foundation & Database** - Next.js 14 setup, Supabase integration, authentication, database schema with RLS
 - [x] **Phase 2: Meal Logging System** - Manual entry forms, image upload, AI analysis (text + images), edit/delete functionality
 - [x] **Phase 3: Telegram Integration** - n8n webhook integration, real-time meal sync, source tracking
-- [ ] **Phase 4: Dashboard & Meals** - Dashboard view with today's totals, meals list page with filters and real-time updates
+- [x] **Phase 4: Dashboard & Meals** - Dashboard view with today's totals, meals list page with filters and real-time updates
 - [ ] **Phase 5: Analytics & Insights** - Charts, trends, time-based analysis, AI-generated insights
 - [ ] **Phase 6: Health App Integration** - Terra API setup, Apple Health/Google Fit sync, health data display
 - [ ] **Phase 7: Settings & Profile** - User settings, goals management, integrations, theme toggle
@@ -60,19 +60,24 @@ Plans:
 **Goal**: Create dashboard with today's nutrition totals and meals browsing page with filters
 **Depends on**: Phase 2
 **Research**: Unlikely (internal UI using established patterns from earlier phases)
-**Plans**: TBD
+**Status**: Complete
+**Plans**: 2
 
 Plans:
 - [x] 04-01: Dashboard with Today's Totals (3 tasks) — Complete
+- [x] 04-02: Meals Filtering & Pagination (3 tasks) — Complete
 
 ### Phase 5: Analytics & Insights
 **Goal**: Build analytics page with charts, trends, and AI-generated nutrition insights
 **Depends on**: Phase 4
 **Research**: Unlikely (Recharts library, internal data visualization patterns)
-**Plans**: TBD
+**Status**: In progress (1/3 plans complete)
+**Plans**: 3
 
 Plans:
-- [ ] TBD
+- [x] 05-01: Analytics Infrastructure & Time Range Selector (3 tasks) — Complete
+- [ ] 05-02: Nutrition Trends Charts (3 tasks) — Pending
+- [ ] 05-03: AI-Generated Insights (3 tasks) — Pending
 
 ### Phase 6: Health App Integration
 **Goal**: Integrate Terra API to sync Apple Health and Google Fit data with dashboard display
