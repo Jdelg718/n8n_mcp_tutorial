@@ -4,12 +4,14 @@ import { format } from 'date-fns'
 import type { Meal } from '@/types/meal'
 import { DeleteButton } from '@/components/meals/DeleteButton'
 import { MealFilters } from '@/components/meals/MealFilters'
+import { Pagination } from '@/components/meals/Pagination'
 import { getMeals } from './actions'
 
 type SearchParams = Promise<{
   dateRange?: string
   mealType?: string
   search?: string
+  page?: string
 }>
 
 export default async function MealsPage({
@@ -24,8 +26,17 @@ export default async function MealsPage({
     search: params.search,
   }
 
-  const meals = await getMeals(filters)
+  // Parse page number, default to 1
+  const page = parseInt(params.page || '1', 10)
+  const pageSize = 20
+
+  const { meals, total, page: currentPage, pageSize: size } = await getMeals(filters, page, pageSize)
   const mealsList = meals as Meal[]
+
+  // Calculate pagination info
+  const totalPages = Math.ceil(total / size)
+  const startIndex = (currentPage - 1) * size + 1
+  const endIndex = Math.min(currentPage * size, total)
 
   // Create filter summary
   const getFilterSummary = () => {
@@ -68,10 +79,17 @@ export default async function MealsPage({
 
       <MealFilters />
 
-      {/* Filter summary */}
+      {/* Results summary */}
       <div className="mb-4">
         <p className="text-sm text-gray-600">
-          Showing <span className="font-medium">{mealsList.length}</span> meal{mealsList.length !== 1 ? 's' : ''}{getFilterSummary()}
+          {total > 0 ? (
+            <>
+              Showing <span className="font-medium">{startIndex}-{endIndex}</span> of{' '}
+              <span className="font-medium">{total}</span> meal{total !== 1 ? 's' : ''}{getFilterSummary()}
+            </>
+          ) : (
+            <>No meals found{getFilterSummary()}</>
+          )}
         </p>
       </div>
 
@@ -169,6 +187,7 @@ export default async function MealsPage({
               </li>
             ))}
           </ul>
+          <Pagination page={currentPage} totalPages={totalPages} />
         </div>
       )}
     </div>

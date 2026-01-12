@@ -28,13 +28,14 @@ export function MealFilters() {
     return () => clearTimeout(timer)
   }, [search])
 
-  // Update URL when filters change
+  // Update URL when filters change (reset to page 1)
   useEffect(() => {
     const params = new URLSearchParams()
 
     if (dateRange !== 'all') params.set('dateRange', dateRange)
     if (mealType !== 'all') params.set('mealType', mealType)
     if (debouncedSearch) params.set('search', debouncedSearch)
+    // Don't include page param - will default to 1
 
     const queryString = params.toString()
     const newUrl = queryString ? `?${queryString}` : '/dashboard/meals'

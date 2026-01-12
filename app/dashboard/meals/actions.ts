@@ -321,54 +321,82 @@ function getDateRange(preset: string): { start: Date | null; end: Date | null } 
   }
 }
 
-export async function getMeals(filters?: {
-  dateRange?: string
-  mealType?: string
-  search?: string
-}) {
+export async function getMeals(
+  filters?: {
+    dateRange?: string
+    mealType?: string
+    search?: string
+  },
+  page: number = 1,
+  pageSize: number = 20
+) {
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return []
+    return { meals: [], total: 0, page: 1, pageSize }
   }
 
-  // Start building the query
+  // Calculate offset
+  const offset = (page - 1) * pageSize
+
+  // Start building the query for meals
   let query = supabase
     .from('meal_logs')
     .select('*')
     .order('logged_at', { ascending: false })
 
-  // Apply date range filter
+  // Start building count query with same filters
+  let countQuery = supabase
+    .from('meal_logs')
+    .select('*', { count: 'exact', head: true })
+
+  // Apply date range filter to both queries
   if (filters?.dateRange && filters.dateRange !== 'all') {
     const { start, end } = getDateRange(filters.dateRange)
     if (start) {
       query = query.gte('logged_at', start.toISOString())
+      countQuery = countQuery.gte('logged_at', start.toISOString())
     }
     if (end) {
       query = query.lt('logged_at', end.toISOString())
+      countQuery = countQuery.lt('logged_at', end.toISOString())
     }
   }
 
-  // Apply meal type filter
+  // Apply meal type filter to both queries
   if (filters?.mealType && filters.mealType !== 'all') {
     query = query.eq('meal_type', filters.mealType)
+    countQuery = countQuery.eq('meal_type', filters.mealType)
   }
 
-  // Apply search filter
+  // Apply search filter to both queries
   if (filters?.search && filters.search.trim() !== '') {
     const searchTerm = `%${filters.search}%`
     query = query.or(`title.ilike.${searchTerm},description.ilike.${searchTerm}`)
+    countQuery = countQuery.or(`title.ilike.${searchTerm},description.ilike.${searchTerm}`)
   }
 
-  const { data: meals, error } = await query
+  // Apply pagination
+  query = query.range(offset, offset + pageSize - 1)
+
+  // Execute both queries
+  const [{ data: meals, error }, { count }] = await Promise.all([
+    query,
+    countQuery
+  ])
 
   if (error) {
     console.error('Error fetching meals:', error)
-    return []
+    return { meals: [], total: 0, page, pageSize }
   }
 
-  return meals || []
+  return {
+    meals: meals || [],
+    total: count || 0,
+    page,
+    pageSize,
+  }
 }
