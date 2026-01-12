@@ -2,6 +2,7 @@ import { TimeRangeSelector } from '@/components/analytics/TimeRangeSelector'
 import { SummaryStats } from '@/components/analytics/SummaryStats'
 import { CalorieTrendsChart } from '@/components/analytics/CalorieTrendsChart'
 import { MacroDistributionChart } from '@/components/analytics/MacroDistributionChart'
+import { InsightsPanel } from '@/components/analytics/InsightsPanel'
 import { getAnalyticsSummary, getDailyNutrition, getMacroDistribution } from './actions'
 import { startOfDay, subDays, subMonths, format } from 'date-fns'
 
@@ -86,7 +87,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <CalorieTrendsChart
             data={Array.isArray(dailyNutrition) ? dailyNutrition : []}
             dateRange={summary.dateRange}
@@ -96,6 +97,11 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
           />
         </div>
       )}
+
+      {/* AI Insights Panel - Full width below charts */}
+      <div className="mt-6">
+        <InsightsPanel startDate={startDate} endDate={endDate} />
+      </div>
     </div>
   )
 }
