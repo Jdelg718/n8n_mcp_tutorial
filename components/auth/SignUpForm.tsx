@@ -17,7 +17,7 @@ export default function SignUpForm() {
           name="full_name"
           type="text"
           required
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
         />
         {state?.errors?.full_name && (
           <p className="mt-1 text-sm text-red-600">{state.errors.full_name[0]}</p>
@@ -33,7 +33,7 @@ export default function SignUpForm() {
           name="email"
           type="email"
           required
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
         />
         {state?.errors?.email && (
           <p className="mt-1 text-sm text-red-600">{state.errors.email[0]}</p>
@@ -49,7 +49,7 @@ export default function SignUpForm() {
           name="password"
           type="password"
           required
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
         />
         {state?.errors?.password && (
           <p className="mt-1 text-sm text-red-600">{state.errors.password[0]}</p>
