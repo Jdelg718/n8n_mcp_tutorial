@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { TodayTotals } from '@/components/dashboard/TodayTotals'
+import { RecentMeals } from '@/components/dashboard/RecentMeals'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -16,7 +17,15 @@ export default async function DashboardPage() {
         <p className="text-gray-600 mt-2">{user?.email}</p>
       </div>
 
-      <TodayTotals />
+      {/* Main content - 2 columns on desktop, 1 column on mobile */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+          <TodayTotals />
+        </div>
+        <div>
+          <RecentMeals />
+        </div>
+      </div>
 
       {/* Quick actions */}
       <div className="mt-6 bg-white shadow rounded-lg p-6">

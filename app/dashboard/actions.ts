@@ -74,3 +74,35 @@ export async function getTodayTotals(): Promise<TodayTotals | { error: string }>
 
   return totals
 }
+
+export type RecentMeal = {
+  id: string
+  title: string
+  meal_type: 'breakfast' | 'lunch' | 'dinner' | 'snack'
+  logged_at: string
+  calories: number | null
+  photo_url: string | null
+}
+
+export async function getRecentMeals(limit: number = 5): Promise<RecentMeal[] | { error: string }> {
+  const supabase = await createClient()
+
+  // Check auth
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { error: 'Not authenticated' }
+  }
+
+  // Fetch recent meals
+  const { data: meals, error } = await supabase
+    .from('meal_logs')
+    .select('id, title, meal_type, logged_at, calories, photo_url')
+    .order('logged_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  return (meals || []) as RecentMeal[]
+}
