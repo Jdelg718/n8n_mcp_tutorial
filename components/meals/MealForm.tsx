@@ -5,11 +5,17 @@ import { useActionState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ImageUpload from './ImageUpload'
+import NutritionDisplay from './NutritionDisplay'
+import type { NutritionResponse } from '@/lib/ai/types'
 
 export default function MealForm() {
   const router = useRouter()
   const [state, formAction, isPending] = useActionState(createMeal, null)
   const [photoUrl, setPhotoUrl] = useState<string | null>(null)
+  const [description, setDescription] = useState('')
+  const [nutritionData, setNutritionData] = useState<NutritionResponse | null>(null)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [aiError, setAiError] = useState<string | null>(null)
 
   // Get current datetime in local timezone for datetime-local input
   const now = new Date()
@@ -23,6 +29,69 @@ export default function MealForm() {
       router.push('/dashboard/meals')
     }
   }, [state?.success, router])
+
+  // AI analysis handler
+  const handleAIAnalysis = async () => {
+    setIsAnalyzing(true)
+    setAiError(null)
+
+    try {
+      const response = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: description || undefined,
+          imageUrl: photoUrl || undefined,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Analysis failed')
+      }
+
+      const result: NutritionResponse = await response.json()
+      setNutritionData(result)
+    } catch (error) {
+      console.error('AI analysis error:', error)
+      setAiError(error instanceof Error ? error.message : 'Failed to analyze meal')
+    } finally {
+      setIsAnalyzing(false)
+    }
+  }
+
+  // Update nutrition field handler
+  const handleNutritionUpdate = (field: string, value: number) => {
+    if (!nutritionData) return
+
+    // Map field names to NutritionResponse keys
+    const fieldMap: Record<string, string> = {
+      calories: 'calories',
+      protein: 'protein_g',
+      carbs: 'carbs_g',
+      fat: 'fat_g',
+      fiber: 'fiber_g',
+      sugar: 'sugar_g',
+      sodium: 'sodium_mg',
+    }
+
+    const key = fieldMap[field]
+    if (!key) return
+
+    setNutritionData({
+      ...nutritionData,
+      nutrition: {
+        ...nutritionData.nutrition,
+        [key]: value,
+      },
+    })
+  }
+
+  // Convert confidence to numeric (0-1)
+  const getConfidenceScore = (confidence: 'high' | 'medium' | 'low'): number => {
+    const scores = { high: 0.9, medium: 0.7, low: 0.4 }
+    return scores[confidence]
+  }
 
   return (
     <form action={formAction} className="space-y-6">
@@ -89,6 +158,8 @@ export default function MealForm() {
           id="description"
           name="description"
           rows={3}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
           placeholder="Any notes about this meal..."
         />
@@ -105,6 +176,48 @@ export default function MealForm() {
       <input type="hidden" name="photo_url" value={photoUrl || ''} />
       {state?.errors?.photo_url && (
         <p className="text-sm text-red-600">{state.errors.photo_url[0]}</p>
+      )}
+
+      {/* AI Analysis Section */}
+      <div className="border-t pt-4">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-medium text-gray-900">Nutrition Information</h3>
+          <button
+            type="button"
+            onClick={handleAIAnalysis}
+            disabled={isAnalyzing || (!description && !photoUrl) || isPending}
+            className="px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isAnalyzing ? 'Analyzing...' : 'Analyze with AI'}
+          </button>
+        </div>
+
+        {aiError && (
+          <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-600">
+            {aiError}
+          </div>
+        )}
+
+        {nutritionData && (
+          <NutritionDisplay
+            nutrition={nutritionData}
+            onUpdate={handleNutritionUpdate}
+          />
+        )}
+      </div>
+
+      {/* Hidden fields for nutrition data */}
+      {nutritionData && (
+        <>
+          <input type="hidden" name="calories" value={nutritionData.nutrition.calories} />
+          <input type="hidden" name="protein" value={nutritionData.nutrition.protein_g} />
+          <input type="hidden" name="carbs" value={nutritionData.nutrition.carbs_g} />
+          <input type="hidden" name="fat" value={nutritionData.nutrition.fat_g} />
+          <input type="hidden" name="fiber" value={nutritionData.nutrition.fiber_g} />
+          <input type="hidden" name="sugar" value={nutritionData.nutrition.sugar_g} />
+          <input type="hidden" name="sodium" value={nutritionData.nutrition.sodium_mg} />
+          <input type="hidden" name="ai_confidence" value={getConfidenceScore(nutritionData.confidence)} />
+        </>
       )}
 
       {state?.errors?._form && (
