@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 import { NUTRITION_SYSTEM_PROMPT } from './prompts';
-import { nutritionResponseSchema, type NutritionResponse } from './types';
+import { type NutritionResponse } from './types';
+import { parseNutritionResponse } from './parsers';
 
 /**
  * OpenRouter client configured with OpenAI SDK
@@ -39,8 +40,7 @@ export async function analyzeTextMeal(
     throw new Error('No content returned from AI');
   }
 
-  const parsed = JSON.parse(content);
-  return nutritionResponseSchema.parse(parsed);
+  return parseNutritionResponse(content);
 }
 
 /**
@@ -82,6 +82,5 @@ export async function analyzeImageMeal(
     throw new Error('No content returned from AI');
   }
 
-  const parsed = JSON.parse(content);
-  return nutritionResponseSchema.parse(parsed);
+  return parseNutritionResponse(content);
 }
