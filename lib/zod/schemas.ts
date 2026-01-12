@@ -18,7 +18,7 @@ export const MealFormSchema = z.object({
     message: 'Meal type required'
   }),
   logged_at: z.string().datetime(), // ISO string from client
-  // Image fields added in Plan 3
+  photo_url: z.string().url().nullable().optional(),
 })
 
 export type MealFormData = z.infer<typeof MealFormSchema>

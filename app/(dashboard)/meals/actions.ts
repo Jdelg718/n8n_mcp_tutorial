@@ -10,6 +10,7 @@ type State = {
     meal_type?: string[]
     logged_at?: string[]
     description?: string[]
+    photo_url?: string[]
     _form?: string[]
   }
   success?: boolean
@@ -23,12 +24,17 @@ export async function createMeal(
   const loggedAtInput = formData.get('logged_at') as string
   const loggedAtISO = loggedAtInput ? new Date(loggedAtInput).toISOString() : ''
 
+  // Get photo_url and handle empty string
+  const photoUrlInput = formData.get('photo_url') as string
+  const photoUrl = photoUrlInput && photoUrlInput.trim() !== '' ? photoUrlInput : null
+
   // Validate with Zod
   const validated = MealFormSchema.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
     meal_type: formData.get('meal_type'),
     logged_at: loggedAtISO,
+    photo_url: photoUrl,
   })
 
   if (!validated.success) {
@@ -54,6 +60,7 @@ export async function createMeal(
     description: validated.data.description || null,
     meal_type: validated.data.meal_type,
     logged_at: new Date(validated.data.logged_at),
+    photo_url: validated.data.photo_url || null,
     source: 'manual',
   })
 

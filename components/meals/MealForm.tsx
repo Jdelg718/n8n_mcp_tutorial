@@ -3,11 +3,13 @@
 import { createMeal } from '@/app/(dashboard)/meals/actions'
 import { useActionState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import ImageUpload from './ImageUpload'
 
 export default function MealForm() {
   const router = useRouter()
   const [state, formAction, isPending] = useActionState(createMeal, null)
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null)
 
   // Get current datetime in local timezone for datetime-local input
   const now = new Date()
@@ -94,6 +96,16 @@ export default function MealForm() {
           <p className="mt-1 text-sm text-red-600">{state.errors.description[0]}</p>
         )}
       </div>
+
+      <ImageUpload
+        value={photoUrl}
+        onChange={setPhotoUrl}
+        disabled={isPending}
+      />
+      <input type="hidden" name="photo_url" value={photoUrl || ''} />
+      {state?.errors?.photo_url && (
+        <p className="text-sm text-red-600">{state.errors.photo_url[0]}</p>
+      )}
 
       {state?.errors?._form && (
         <p className="text-sm text-red-600">{state.errors._form[0]}</p>

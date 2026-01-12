@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import Image from 'next/image'
 import { format } from 'date-fns'
 import type { Meal } from '@/types/meal'
 
@@ -45,7 +46,17 @@ export default async function MealsPage() {
           <ul className="divide-y divide-gray-200">
             {mealsList.map((meal) => (
               <li key={meal.id} className="p-6 hover:bg-gray-50">
-                <div className="flex justify-between items-start">
+                <div className="flex gap-4 items-start">
+                  {meal.photo_url && (
+                    <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200">
+                      <Image
+                        src={meal.photo_url}
+                        alt={meal.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900">
                       {meal.title}
