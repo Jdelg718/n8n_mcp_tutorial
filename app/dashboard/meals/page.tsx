@@ -1,24 +1,58 @@
-import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import Image from 'next/image'
 import { format } from 'date-fns'
 import type { Meal } from '@/types/meal'
 import { DeleteButton } from '@/components/meals/DeleteButton'
+import { MealFilters } from '@/components/meals/MealFilters'
+import { getMeals } from './actions'
 
-export default async function MealsPage() {
-  const supabase = await createClient()
+type SearchParams = Promise<{
+  dateRange?: string
+  mealType?: string
+  search?: string
+}>
 
-  // Fetch meals for current user
-  const { data: meals, error } = await supabase
-    .from('meal_logs')
-    .select('*')
-    .order('logged_at', { ascending: false })
-
-  if (error) {
-    console.error('Error fetching meals:', error)
+export default async function MealsPage({
+  searchParams,
+}: {
+  searchParams: SearchParams
+}) {
+  const params = await searchParams
+  const filters = {
+    dateRange: params.dateRange,
+    mealType: params.mealType,
+    search: params.search,
   }
 
-  const mealsList = (meals || []) as Meal[]
+  const meals = await getMeals(filters)
+  const mealsList = meals as Meal[]
+
+  // Create filter summary
+  const getFilterSummary = () => {
+    const parts: string[] = []
+
+    if (filters.dateRange && filters.dateRange !== 'all') {
+      const labels: Record<string, string> = {
+        'today': 'Today',
+        'yesterday': 'Yesterday',
+        'last-7-days': 'Last 7 days',
+        'last-30-days': 'Last 30 days',
+        'this-month': 'This month',
+        'last-month': 'Last month',
+      }
+      parts.push(labels[filters.dateRange] || filters.dateRange)
+    }
+
+    if (filters.mealType && filters.mealType !== 'all') {
+      parts.push(filters.mealType.charAt(0).toUpperCase() + filters.mealType.slice(1))
+    }
+
+    if (filters.search) {
+      parts.push(`"${filters.search}"`)
+    }
+
+    return parts.length > 0 ? ` (${parts.join(', ')})` : ''
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -32,14 +66,29 @@ export default async function MealsPage() {
         </Link>
       </div>
 
+      <MealFilters />
+
+      {/* Filter summary */}
+      <div className="mb-4">
+        <p className="text-sm text-gray-600">
+          Showing <span className="font-medium">{mealsList.length}</span> meal{mealsList.length !== 1 ? 's' : ''}{getFilterSummary()}
+        </p>
+      </div>
+
       {mealsList.length === 0 ? (
         <div className="bg-white shadow rounded-lg p-12 text-center">
-          <p className="text-gray-500 mb-4">No meals logged yet</p>
+          <p className="text-gray-500 mb-4">
+            {filters.dateRange || filters.mealType || filters.search
+              ? 'No meals found matching your filters'
+              : 'No meals logged yet'}
+          </p>
           <Link
             href="/dashboard/meals/new"
             className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium"
           >
-            Log Your First Meal
+            {filters.dateRange || filters.mealType || filters.search
+              ? 'Clear Filters'
+              : 'Log Your First Meal'}
           </Link>
         </div>
       ) : (

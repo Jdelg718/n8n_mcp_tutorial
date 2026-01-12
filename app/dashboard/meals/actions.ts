@@ -283,3 +283,92 @@ export async function deleteMeal(
   revalidatePath('/dashboard/meals')
   return { success: true }
 }
+
+// Helper function to calculate date ranges
+function getDateRange(preset: string): { start: Date | null; end: Date | null } {
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+  switch (preset) {
+    case 'today':
+      return { start: today, end: null }
+    case 'yesterday': {
+      const yesterday = new Date(today)
+      yesterday.setDate(yesterday.getDate() - 1)
+      return { start: yesterday, end: today }
+    }
+    case 'last-7-days': {
+      const sevenDaysAgo = new Date(now)
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+      return { start: sevenDaysAgo, end: null }
+    }
+    case 'last-30-days': {
+      const thirtyDaysAgo = new Date(now)
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+      return { start: thirtyDaysAgo, end: null }
+    }
+    case 'this-month': {
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+      return { start: monthStart, end: null }
+    }
+    case 'last-month': {
+      const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+      const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 1)
+      return { start: lastMonthStart, end: lastMonthEnd }
+    }
+    default:
+      return { start: null, end: null } // all time
+  }
+}
+
+export async function getMeals(filters?: {
+  dateRange?: string
+  mealType?: string
+  search?: string
+}) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return []
+  }
+
+  // Start building the query
+  let query = supabase
+    .from('meal_logs')
+    .select('*')
+    .order('logged_at', { ascending: false })
+
+  // Apply date range filter
+  if (filters?.dateRange && filters.dateRange !== 'all') {
+    const { start, end } = getDateRange(filters.dateRange)
+    if (start) {
+      query = query.gte('logged_at', start.toISOString())
+    }
+    if (end) {
+      query = query.lt('logged_at', end.toISOString())
+    }
+  }
+
+  // Apply meal type filter
+  if (filters?.mealType && filters.mealType !== 'all') {
+    query = query.eq('meal_type', filters.mealType)
+  }
+
+  // Apply search filter
+  if (filters?.search && filters.search.trim() !== '') {
+    const searchTerm = `%${filters.search}%`
+    query = query.or(`title.ilike.${searchTerm},description.ilike.${searchTerm}`)
+  }
+
+  const { data: meals, error } = await query
+
+  if (error) {
+    console.error('Error fetching meals:', error)
+    return []
+  }
+
+  return meals || []
+}
