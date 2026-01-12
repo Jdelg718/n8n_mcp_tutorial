@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
-import { NUTRITION_SYSTEM_PROMPT } from './prompts';
-import { type NutritionResponse } from './types';
-import { parseNutritionResponse } from './parsers';
+import { NUTRITION_SYSTEM_PROMPT, INSIGHTS_SYSTEM_PROMPT } from './prompts';
+import { type NutritionResponse, type InsightsResponse } from './types';
+import { parseNutritionResponse, parseInsightsResponse } from './parsers';
 
 /**
  * OpenRouter client configured with OpenAI SDK
@@ -83,4 +83,31 @@ export async function analyzeImageMeal(
   }
 
   return parseNutritionResponse(content);
+}
+
+/**
+ * Analyze nutrition patterns and generate insights using GPT-4o-mini
+ * Cost-optimized for text-only pattern analysis
+ *
+ * @param userPrompt - Analysis prompt with nutrition data and context
+ * @returns Structured insights, recommendations, and concerns
+ */
+export async function analyzeNutritionInsights(
+  userPrompt: string
+): Promise<InsightsResponse> {
+  const response = await openrouter.chat.completions.create({
+    model: 'openai/gpt-4o-mini',
+    messages: [
+      { role: 'system', content: INSIGHTS_SYSTEM_PROMPT },
+      { role: 'user', content: userPrompt },
+    ],
+    response_format: { type: 'json_object' },
+  });
+
+  const content = response.choices[0].message.content;
+  if (!content) {
+    throw new Error('No content returned from AI');
+  }
+
+  return parseInsightsResponse(content);
 }

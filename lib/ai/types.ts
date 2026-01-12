@@ -45,3 +45,21 @@ export const nutritionResponseSchema = z.object({
   confidence: z.enum(['high', 'medium', 'low']),
   notes: z.string(),
 });
+
+/**
+ * AI-generated insights response structure
+ */
+export interface InsightsResponse {
+  insights: string[];
+  recommendations: string[];
+  concerns: string[];
+}
+
+/**
+ * Zod schema for validating AI insights responses
+ */
+export const insightsResponseSchema = z.object({
+  insights: z.array(z.string()),
+  recommendations: z.array(z.string()),
+  concerns: z.array(z.string()),
+});
