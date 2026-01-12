@@ -1,4 +1,5 @@
 import { TimeRangeSelector } from '@/components/analytics/TimeRangeSelector'
+import { SummaryStats } from '@/components/analytics/SummaryStats'
 import { getAnalyticsSummary } from './actions'
 import { startOfDay, subDays, subMonths, format } from 'date-fns'
 
@@ -62,43 +63,8 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
 
       <TimeRangeSelector />
 
-      {/* Summary Stats - placeholder for next task */}
-      <div className="bg-white shadow rounded-lg p-6 mb-6">
-        <div className="mb-4">
-          <p className="text-sm text-gray-600">
-            {summary.dateRange}
-          </p>
-        </div>
-
-        {summary.totalMeals === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-500 mb-4">
-              No meals logged in this period. Try a different time range.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-1">Total Meals</p>
-              <p className="text-3xl font-bold text-gray-900">{summary.totalMeals}</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-1">Avg Calories/day</p>
-              <p className="text-3xl font-bold text-gray-900">{summary.avgCalories}</p>
-              <p className="text-xs text-gray-500">kcal</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-1">Avg Protein/day</p>
-              <p className="text-3xl font-bold text-gray-900">{summary.avgProtein}</p>
-              <p className="text-xs text-gray-500">g</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-1">Avg Carbs/day</p>
-              <p className="text-3xl font-bold text-gray-900">{summary.avgCarbs}</p>
-              <p className="text-xs text-gray-500">g</p>
-            </div>
-          </div>
-        )}
+      <div className="mb-6">
+        <SummaryStats summary={summary} />
       </div>
 
       {/* Placeholder for charts */}
