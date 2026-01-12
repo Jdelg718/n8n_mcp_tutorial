@@ -64,3 +64,28 @@ export async function createMeal(
   revalidatePath('/dashboard/meals')
   return { success: true }
 }
+
+export async function getUploadUrl(fileName: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error('Not authenticated');
+  }
+
+  // User-scoped path: {user_id}/{timestamp}-{filename}
+  const filePath = `${user.id}/${Date.now()}-${fileName}`;
+
+  // Create signed URL (expires in 2 hours)
+  const { data, error } = await supabase.storage
+    .from('meal-images')
+    .createSignedUploadUrl(filePath);
+
+  if (error) throw error;
+
+  return {
+    signedUrl: data.signedUrl,
+    path: filePath,
+    token: data.token,
+  };
+}
