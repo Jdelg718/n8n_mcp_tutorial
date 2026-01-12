@@ -19,12 +19,16 @@ export async function createMeal(
   prevState: State | null,
   formData: FormData
 ): Promise<State> {
+  // Get logged_at and convert datetime-local format to ISO datetime
+  const loggedAtInput = formData.get('logged_at') as string
+  const loggedAtISO = loggedAtInput ? new Date(loggedAtInput).toISOString() : ''
+
   // Validate with Zod
   const validated = MealFormSchema.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
     meal_type: formData.get('meal_type'),
-    logged_at: formData.get('logged_at'),
+    logged_at: loggedAtISO,
   })
 
   if (!validated.success) {
