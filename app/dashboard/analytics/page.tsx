@@ -1,6 +1,8 @@
 import { TimeRangeSelector } from '@/components/analytics/TimeRangeSelector'
 import { SummaryStats } from '@/components/analytics/SummaryStats'
-import { getAnalyticsSummary } from './actions'
+import { CalorieTrendsChart } from '@/components/analytics/CalorieTrendsChart'
+import { MacroDistributionChart } from '@/components/analytics/MacroDistributionChart'
+import { getAnalyticsSummary, getDailyNutrition, getMacroDistribution } from './actions'
 import { startOfDay, subDays, subMonths, format } from 'date-fns'
 
 type SearchParams = Promise<{
@@ -44,7 +46,12 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
   const range = params.range || '7d'
   const { startDate, endDate } = calculateDateRange(range)
 
-  const summary = await getAnalyticsSummary(startDate, endDate)
+  // Fetch all analytics data
+  const [summary, dailyNutrition, macroDistribution] = await Promise.all([
+    getAnalyticsSummary(startDate, endDate),
+    getDailyNutrition(startDate, endDate),
+    getMacroDistribution(startDate, endDate),
+  ])
 
   if ('error' in summary) {
     return (
@@ -57,6 +64,9 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
     )
   }
 
+  // Handle errors for chart data
+  const hasChartErrors = 'error' in dailyNutrition || 'error' in macroDistribution
+
   return (
     <div className="max-w-7xl mx-auto">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Analytics</h1>
@@ -67,12 +77,25 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
         <SummaryStats summary={summary} />
       </div>
 
-      {/* Placeholder for charts */}
-      <div className="bg-white shadow rounded-lg p-6">
-        <p className="text-gray-500 text-center py-8">
-          Charts will be added in next phase
-        </p>
-      </div>
+      {hasChartErrors ? (
+        <div className="bg-white shadow rounded-lg p-6">
+          <p className="text-red-600">
+            Error loading chart data:
+            {'error' in dailyNutrition ? ` ${dailyNutrition.error}` : ''}
+            {'error' in macroDistribution ? ` ${macroDistribution.error}` : ''}
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <CalorieTrendsChart
+            data={Array.isArray(dailyNutrition) ? dailyNutrition : []}
+            dateRange={summary.dateRange}
+          />
+          <MacroDistributionChart
+            data={!Array.isArray(macroDistribution) ? macroDistribution : { protein: 0, carbs: 0, fat: 0 }}
+          />
+        </div>
+      )}
     </div>
   )
 }
