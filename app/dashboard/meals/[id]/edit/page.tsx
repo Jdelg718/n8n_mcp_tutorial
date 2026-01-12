@@ -7,13 +7,14 @@ import { updateMeal } from '@/app/dashboard/meals/actions'
 export default async function EditMealPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
+  const { id } = await params
   const supabase = await createClient()
   const { data: meal } = await supabase
     .from('meal_logs')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!meal) {
@@ -44,7 +45,7 @@ export default async function EditMealPage({
   }
 
   // Bind mealId to updateMeal action
-  const updateMealWithId = updateMeal.bind(null, params.id)
+  const updateMealWithId = updateMeal.bind(null, id)
 
   return (
     <div className="max-w-2xl mx-auto">
