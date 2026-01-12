@@ -16,7 +16,7 @@ type State = {
 }
 
 export async function createMeal(
-  prevState: State,
+  prevState: State | null,
   formData: FormData
 ): Promise<State> {
   // Validate with Zod
