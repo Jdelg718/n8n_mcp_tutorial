@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-11)
 
 **Core value:** Dashboard insights must be exceptional - beautiful, actionable visualizations of nutrition data, trends, and progress tracking
-**Current focus:** Phase 3 — Telegram Integration (ready to plan)
+**Current focus:** Phase 4 — Dashboard & Meals (in progress)
 
 ## Current Position
 
-Phase: 3 of 8 (Telegram Integration)
-Plan: 1 of 1 in current phase
-Status: ✅ COMPLETE
-Last activity: 2026-01-12 — Completed 03-01-PLAN.md (Telegram Webhook Integration)
+Phase: 4 of 8 (Dashboard & Meals)
+Plan: 1 of TBD in current phase
+Status: In progress
+Last activity: 2026-01-12 — Completed 04-01-PLAN.md (Dashboard with Today's Totals)
 
-Progress: ███████████░░░ 75% (9/12 plans)
+Progress: ████████████░░ 83% (10/12 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 13 min
-- Total execution time: 2.2 hours
+- Total plans completed: 10
+- Average duration: 11 min
+- Total execution time: 2.3 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: ███████████░░░ 75% (9/12 plans)
 | 1 | 3 | 68 min | 23 min |
 | 2 | 5 | 64 min | 13 min |
 | 3 (✅) | 1 | 2 min | 2 min |
+| 4 | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 6 min, 8 min, 19 min, 19 min, 2 min
-- Trend: Webhook/integration tasks can be extremely fast (2 min) when infrastructure is established
+- Last 5 plans: 8 min, 19 min, 19 min, 2 min, 3 min
+- Trend: UI-focused tasks remain fast (2-3 min) when building on established patterns
 
 ## Accumulated Context
 
@@ -67,6 +68,9 @@ Recent decisions affecting current work:
 | 03 | Bearer token authentication for webhooks | Use WEBHOOK_SECRET env var for v1 webhook auth (simple, secure) |
 | 03 | Admin client bypasses RLS for webhooks | createClient(url, serviceRoleKey) for trusted external integrations |
 | 03 | Default meal_type to 'snack' for Telegram | Makes optional field truly optional, simplifies n8n workflow |
+| 04 | Hardcoded nutrition goals for v1 | 2000 kcal, 150g protein, 250g carbs, 67g fat - Phase 7 adds user customization |
+| 04 | Color-coded progress bars | Green <80%, yellow 80-100%, red >100% for visual progress feedback |
+| 04 | Simple relative time formatter | Custom implementation without date-fns dependency for bundle size |
 
 ### Deferred Issues
 
@@ -79,16 +83,18 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-12
-Stopped at: Completed Phase 3 (03-01-PLAN.md) — Telegram webhook integration with n8n
+Stopped at: Completed 04-01-PLAN.md — Dashboard with today's nutrition totals
 Resume file: None
 
-## Phase 3 Complete! 🎉
+## Recent Progress
 
-Telegram integration is fully functional with:
-- ✅ Webhook API endpoint with Bearer auth
-- ✅ n8n workflow configured and tested
-- ✅ Real-time meal sync from Telegram to web app
-- ✅ Source tracking (telegram_text, telegram_image)
-- ✅ Deployed to Vercel
+**Phase 3 Complete! 🎉**
+- ✅ Telegram webhook integration fully functional
 
-**Ready for Phase 4:** Dashboard & Meals page with today's totals and filtering
+**Phase 4 - Plan 1 Complete! 🎉**
+- ✅ Dashboard with real-time nutrition totals
+- ✅ Color-coded progress bars for calories, protein, carbs, fat
+- ✅ Recent meals preview with relative timestamps
+- ✅ Responsive 2-column layout (desktop) / 1-column (mobile)
+
+**Ready for 04-02:** Meals page filtering (meal type, date range, search)
