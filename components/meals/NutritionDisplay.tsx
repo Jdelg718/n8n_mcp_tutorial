@@ -59,7 +59,7 @@ export default function NutritionDisplay({
             type="number"
             value={calories}
             onChange={(e) => onUpdate('calories', Number(e.target.value))}
-            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none text-gray-900 bg-white"
           />
         </div>
 
@@ -72,7 +72,7 @@ export default function NutritionDisplay({
             step="0.1"
             value={protein_g}
             onChange={(e) => onUpdate('protein', Number(e.target.value))}
-            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none text-gray-900 bg-white"
           />
         </div>
 
@@ -85,7 +85,7 @@ export default function NutritionDisplay({
             step="0.1"
             value={carbs_g}
             onChange={(e) => onUpdate('carbs', Number(e.target.value))}
-            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none text-gray-900 bg-white"
           />
         </div>
 
@@ -98,7 +98,7 @@ export default function NutritionDisplay({
             step="0.1"
             value={fat_g}
             onChange={(e) => onUpdate('fat', Number(e.target.value))}
-            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none text-gray-900 bg-white"
           />
         </div>
 
@@ -112,7 +112,7 @@ export default function NutritionDisplay({
             step="0.1"
             value={fiber_g}
             onChange={(e) => onUpdate('fiber', Number(e.target.value))}
-            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none text-gray-900 bg-white"
           />
         </div>
 
@@ -125,7 +125,7 @@ export default function NutritionDisplay({
             step="0.1"
             value={sugar_g}
             onChange={(e) => onUpdate('sugar', Number(e.target.value))}
-            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none text-gray-900 bg-white"
           />
         </div>
 
@@ -138,7 +138,7 @@ export default function NutritionDisplay({
             step="1"
             value={sodium_mg}
             onChange={(e) => onUpdate('sodium', Number(e.target.value))}
-            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+            className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-500 focus:outline-none text-gray-900 bg-white"
           />
         </div>
       </div>

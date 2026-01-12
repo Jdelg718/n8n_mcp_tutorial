@@ -150,7 +150,7 @@ export default function MealForm({ action, initialData }: MealFormProps) {
           type="text"
           required
           defaultValue={initialData?.title}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 text-gray-900 bg-white"
           placeholder="e.g., Chicken salad, Protein shake"
         />
         {state?.errors?.title && (
@@ -167,7 +167,7 @@ export default function MealForm({ action, initialData }: MealFormProps) {
           name="meal_type"
           required
           defaultValue={initialData?.meal_type}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 text-gray-900 bg-white"
         >
           <option value="">Select a meal type</option>
           <option value="breakfast">Breakfast</option>
@@ -190,7 +190,7 @@ export default function MealForm({ action, initialData }: MealFormProps) {
           type="datetime-local"
           required
           defaultValue={initialData?.logged_at || localDatetime}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 text-gray-900 bg-white"
         />
         {state?.errors?.logged_at && (
           <p className="mt-1 text-sm text-red-600">{state.errors.logged_at[0]}</p>
@@ -207,7 +207,7 @@ export default function MealForm({ action, initialData }: MealFormProps) {
           rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 text-gray-900 bg-white"
           placeholder="Any notes about this meal..."
         />
         {state?.errors?.description && (
