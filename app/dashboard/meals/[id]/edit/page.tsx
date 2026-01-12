@@ -2,7 +2,7 @@ import MealForm from '@/components/meals/MealForm'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import { updateMeal } from '@/app/(dashboard)/meals/actions'
+import { updateMeal } from '@/app/dashboard/meals/actions'
 
 export default async function EditMealPage({
   params,

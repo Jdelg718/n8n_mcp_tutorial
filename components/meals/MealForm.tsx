@@ -1,6 +1,6 @@
 'use client'
 
-import { createMeal } from '@/app/(dashboard)/meals/actions'
+import { createMeal } from '@/app/dashboard/meals/actions'
 import { useActionState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'

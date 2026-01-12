@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Compressor from 'compressorjs'
-import { getUploadUrl } from '@/app/(dashboard)/meals/actions'
+import { getUploadUrl } from '@/app/dashboard/meals/actions'
 import { getPublicUrl } from '@/lib/storage/images'
 import Image from 'next/image'
 
