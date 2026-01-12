@@ -71,12 +71,12 @@ Plans:
 **Goal**: Build analytics page with charts, trends, and AI-generated nutrition insights
 **Depends on**: Phase 4
 **Research**: Unlikely (Recharts library, internal data visualization patterns)
-**Status**: In progress (1/3 plans complete)
+**Status**: In progress (2/3 plans complete)
 **Plans**: 3
 
 Plans:
 - [x] 05-01: Analytics Infrastructure & Time Range Selector (3 tasks) — Complete
-- [ ] 05-02: Nutrition Trends Charts (3 tasks) — Pending
+- [x] 05-02: Nutrition Trends Charts (3 tasks) — Complete
 - [ ] 05-03: AI-Generated Insights (3 tasks) — Pending
 
 ### Phase 6: Health App Integration
