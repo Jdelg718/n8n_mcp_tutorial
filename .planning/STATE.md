@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-01-11)
 ## Current Position
 
 Phase: 1 of 8 (Foundation & Database)
-Plan: 1 of 3 in current phase
-Status: In progress
-Last activity: 2026-01-12 — Completed 01-01-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-01-12 — Completed 01-03-PLAN.md
 
-Progress: █░░░░░░░░░ 10%
+Progress: ███░░░░░░░ 30%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 6 min
-- Total execution time: 0.1 hours
+- Total plans completed: 3
+- Average duration: 23 min
+- Total execution time: 1.1 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1 | 1 | 6 min | 6 min |
+| 1 | 3 | 68 min | 23 min |
 
 **Recent Trend:**
-- Last 5 plans: 6 min
-- Trend: First plan complete
+- Last 5 plans: 6 min, 34 min, 28 min
+- Trend: Consistent velocity (~20-30 min per plan)
 
 ## Accumulated Context
 
@@ -44,6 +44,12 @@ Recent decisions affecting current work:
 |-------|----------|-----------|
 | 01 | Using @supabase/ssr | Latest recommended approach, not deprecated auth-helpers |
 | 01 | Middleware token refresh on all routes except static | Automatic session management without manual intervention |
+| 01 | Wrapped (SELECT auth.uid()) for RLS | Performance optimization - cached per statement vs per row |
+| 01 | CHECK constraints on enum columns | Data integrity enforced at database level |
+| 01 | Composite indexes (user_id, timestamp DESC) | Optimizes most common query pattern for user data |
+| 01 | Server Actions with useActionState hook for auth forms | Progressive enhancement, loading states, automatic error handling |
+| 01 | Always use auth.getUser() never getSession() | Avoids stale sessions (Supabase best practice) |
+| 01 | Protected layout pattern at route group level | Single auth check protects all dashboard routes |
 
 ### Deferred Issues
 
@@ -55,6 +61,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-12T03:34:55Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-01-12T05:21:29Z
+Stopped at: Completed 01-03-PLAN.md (Phase 1 complete)
 Resume file: None
