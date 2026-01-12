@@ -64,11 +64,44 @@ export default async function MealsPage() {
                     {meal.description && (
                       <p className="mt-1 text-sm text-gray-600">{meal.description}</p>
                     )}
+
+                    {/* Nutrition summary */}
+                    {meal.calories !== null && (
+                      <div className="mt-2 text-sm text-gray-700 font-medium">
+                        {meal.calories} cal
+                        {meal.protein !== null && ` | ${Math.round(meal.protein)}g protein`}
+                        {meal.carbs !== null && ` | ${Math.round(meal.carbs)}g carbs`}
+                        {meal.fat !== null && ` | ${Math.round(meal.fat)}g fat`}
+                      </div>
+                    )}
+
                     <div className="mt-2 flex items-center gap-4 text-sm text-gray-500">
                       <span className="capitalize inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         {meal.meal_type}
                       </span>
                       <span>{format(new Date(meal.logged_at), 'MMM d, yyyy h:mm a')}</span>
+
+                      {/* AI confidence badge */}
+                      {meal.ai_confidence !== null && (
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                            meal.ai_confidence >= 0.8
+                              ? 'bg-green-100 text-green-800'
+                              : meal.ai_confidence >= 0.6
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-red-100 text-red-800'
+                          }`}
+                        >
+                          AI {Math.round(meal.ai_confidence * 100)}%
+                        </span>
+                      )}
+
+                      {/* Manual entry badge */}
+                      {meal.calories !== null && meal.ai_confidence === null && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          Manual
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>

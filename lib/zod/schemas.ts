@@ -19,6 +19,15 @@ export const MealFormSchema = z.object({
   }),
   logged_at: z.string().datetime(), // ISO string from client
   photo_url: z.string().url().nullable().optional(),
+  // Nutrition fields (all optional - manual entry without AI is valid)
+  calories: z.number().int().min(0).optional(),
+  protein: z.number().min(0).optional(),
+  carbs: z.number().min(0).optional(),
+  fat: z.number().min(0).optional(),
+  fiber: z.number().min(0).optional(),
+  sugar: z.number().min(0).optional(),
+  sodium: z.number().min(0).optional(),
+  ai_confidence: z.number().min(0).max(1).optional(), // 0.0 to 1.0
 })
 
 export type MealFormData = z.infer<typeof MealFormSchema>
