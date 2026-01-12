@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     // Fetch all meals for the date range with nutrition data
     const { data: meals, error } = await supabase
       .from('meal_logs')
-      .select('name, meal_type, calories, protein, carbs, fat, fiber, sugar, sodium, logged_at')
+      .select('title, meal_type, calories, protein, carbs, fat, fiber, sugar, sodium, logged_at')
       .gte('logged_at', startDate)
       .lte('logged_at', endDate)
       .order('logged_at', { ascending: true });
@@ -161,7 +161,7 @@ ${meals
   .filter((m) => m.calories)
   .sort((a, b) => (b.calories || 0) - (a.calories || 0))
   .slice(0, 5)
-  .map((m) => `- ${m.name} (${m.calories} kcal, P:${m.protein || 0}g C:${m.carbs || 0}g F:${m.fat || 0}g)`)
+  .map((m) => `- ${m.title} (${m.calories} kcal, P:${m.protein || 0}g C:${m.carbs || 0}g F:${m.fat || 0}g)`)
   .join('\n')}
 
 Please provide:
