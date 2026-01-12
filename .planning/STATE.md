@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-01-11)
 
 **Core value:** Dashboard insights must be exceptional - beautiful, actionable visualizations of nutrition data, trends, and progress tracking
-**Current focus:** Phase 1 — Foundation & Database
+**Current focus:** Phase 2 — Meal Logging System
 
 ## Current Position
 
-Phase: 1 of 8 (Foundation & Database)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-01-12 — Completed 01-03-PLAN.md
+Phase: 2 of 8 (Meal Logging System)
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-01-12 — Completed 02-01-PLAN.md
 
-Progress: ███░░░░░░░ 30%
+Progress: ████░░░░░░ 36%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 23 min
-- Total execution time: 1.1 hours
+- Total plans completed: 4
+- Average duration: 19 min
+- Total execution time: 1.2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 | 3 | 68 min | 23 min |
+| 2 | 1 | 6 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 6 min, 34 min, 28 min
-- Trend: Consistent velocity (~20-30 min per plan)
+- Last 5 plans: 6 min, 34 min, 28 min, 6 min
+- Trend: Variable velocity (6-34 min per plan, infrastructure faster than full-stack features)
 
 ## Accumulated Context
 
@@ -50,6 +51,10 @@ Recent decisions affecting current work:
 | 01 | Server Actions with useActionState hook for auth forms | Progressive enhancement, loading states, automatic error handling |
 | 01 | Always use auth.getUser() never getSession() | Avoids stale sessions (Supabase best practice) |
 | 01 | Protected layout pattern at route group level | Single auth check protects all dashboard routes |
+| 02 | Use GPT-4o (not mini) for image analysis | Mini uses 20-33x more tokens for vision, costs same as GPT-4o |
+| 02 | Use GPT-4o-mini for text-only analysis | 33x cheaper than GPT-4o for text descriptions |
+| 02 | Structured JSON output with response_format | Ensures reliable AI response parsing |
+| 02 | Path-based RLS policies using folder pattern | User isolation via storage.foldername(name)[1] = auth.uid() |
 
 ### Deferred Issues
 
@@ -61,6 +66,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-12T05:21:29Z
-Stopped at: Completed 01-03-PLAN.md (Phase 1 complete)
+Last session: 2026-01-12T11:36:34Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None
