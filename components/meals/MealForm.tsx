@@ -8,11 +8,30 @@ import ImageUpload from './ImageUpload'
 import NutritionDisplay from './NutritionDisplay'
 import type { NutritionResponse } from '@/lib/ai/types'
 
-export default function MealForm() {
+type MealFormProps = {
+  action?: (prevState: any, formData: FormData) => Promise<any>
+  initialData?: {
+    title: string
+    description: string
+    meal_type: string
+    logged_at: string
+    photo_url: string
+    calories?: number
+    protein?: number
+    carbs?: number
+    fat?: number
+    fiber?: number
+    sugar?: number
+    sodium?: number
+    ai_confidence?: number
+  }
+}
+
+export default function MealForm({ action, initialData }: MealFormProps) {
   const router = useRouter()
-  const [state, formAction, isPending] = useActionState(createMeal, null)
-  const [photoUrl, setPhotoUrl] = useState<string | null>(null)
-  const [description, setDescription] = useState('')
+  const [state, formAction, isPending] = useActionState(action || createMeal, null)
+  const [photoUrl, setPhotoUrl] = useState<string | null>(initialData?.photo_url || null)
+  const [description, setDescription] = useState(initialData?.description || '')
   const [nutritionData, setNutritionData] = useState<NutritionResponse | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [aiError, setAiError] = useState<string | null>(null)
@@ -22,6 +41,32 @@ export default function MealForm() {
   const localDatetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
     .toISOString()
     .slice(0, 16)
+
+  // Initialize nutrition data from initialData if in edit mode
+  useEffect(() => {
+    if (initialData?.calories !== undefined) {
+      setNutritionData({
+        items: [],
+        nutrition: {
+          calories: initialData.calories,
+          protein_g: initialData.protein || 0,
+          carbs_g: initialData.carbs || 0,
+          fat_g: initialData.fat || 0,
+          fiber_g: initialData.fiber || 0,
+          sugar_g: initialData.sugar || 0,
+          sodium_mg: initialData.sodium || 0,
+        },
+        confidence: initialData.ai_confidence
+          ? initialData.ai_confidence >= 0.8
+            ? 'high'
+            : initialData.ai_confidence >= 0.6
+            ? 'medium'
+            : 'low'
+          : 'medium',
+        notes: '',
+      })
+    }
+  }, [initialData])
 
   // Redirect on success
   useEffect(() => {
@@ -104,6 +149,7 @@ export default function MealForm() {
           name="title"
           type="text"
           required
+          defaultValue={initialData?.title}
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
           placeholder="e.g., Chicken salad, Protein shake"
         />
@@ -120,6 +166,7 @@ export default function MealForm() {
           id="meal_type"
           name="meal_type"
           required
+          defaultValue={initialData?.meal_type}
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
         >
           <option value="">Select a meal type</option>
@@ -142,7 +189,7 @@ export default function MealForm() {
           name="logged_at"
           type="datetime-local"
           required
-          defaultValue={localDatetime}
+          defaultValue={initialData?.logged_at || localDatetime}
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
         />
         {state?.errors?.logged_at && (
@@ -230,7 +277,7 @@ export default function MealForm() {
           disabled={isPending}
           className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isPending ? 'Saving...' : 'Save Meal'}
+          {isPending ? 'Saving...' : initialData ? 'Update Meal' : 'Save Meal'}
         </button>
         <button
           type="button"
