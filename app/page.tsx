@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import Image from 'next/image'
 import { redirect } from 'next/navigation'
 
 export default async function LandingPage() {
@@ -22,7 +23,13 @@ export default async function LandingPage() {
             {/* Logo */}
             <div className="flex items-center space-x-10">
               <Link href="/" className="flex items-center space-x-2.5 group">
-                <div className="w-9 h-9 rounded-lg bg-gradient-purple transition-transform group-hover:scale-105"></div>
+                <Image
+                  src="/logo.png"
+                  alt="NutriTrack Logo"
+                  width={36}
+                  height={36}
+                  className="rounded-lg transition-transform group-hover:scale-105"
+                />
                 <span className="text-xl font-bold text-gray-900">NutriTrack</span>
               </Link>
 

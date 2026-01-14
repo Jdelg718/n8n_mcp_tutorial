@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { signOut } from '@/app/actions/auth'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default async function DashboardLayout({
   children,
@@ -25,7 +26,16 @@ export default async function DashboardLayout({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center gap-8">
-              <h1 className="text-xl font-semibold text-gray-900">Meal Tracker</h1>
+              <Link href="/dashboard" className="flex items-center gap-2 group">
+                <Image
+                  src="/logo.png"
+                  alt="Logo"
+                  width={32}
+                  height={32}
+                  className="rounded-md transition-transform group-hover:scale-105"
+                />
+                <span className="text-xl font-semibold text-gray-900">Meal Tracker</span>
+              </Link>
               <div className="flex gap-4">
                 <Link
                   href="/dashboard"
