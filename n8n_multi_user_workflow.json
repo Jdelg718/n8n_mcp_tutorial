@@ -1,0 +1,268 @@
+{
+  "name": "Meal Tracker Multi-User",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        -272
+      ],
+      "id": "7f3713ec-bc6a-4ca0-807e-7f454dbaa84e",
+      "name": "Telegram Trigger",
+      "webhookId": "9c8991ce-c979-439a-98b6-609586e72656",
+      "credentials": {
+        "telegramApi": {
+          "id": "P5klJPvL0baZPhe8",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "  You are a nutrition expert. When the user describes a meal, analyze it and return ONLY a    \n  JSON object in this exact format:\n\n  {                                                                                           \n    \"meal_name\": \"brief descriptive name\",                                                    \n    \"calories\": estimated_number,                                                             \n    \"protein_g\": estimated_number,                                                            \n    \"carbs_g\": estimated_number,                                                              \n    \"fat_g\": estimated_number,                                                                \n    \"meal_description\": \"original user description\"                                           \n  }                                                                                           \n                                                                                              \n  Do NOT include markdown, code blocks, or any extra text. ONLY return the JSON object.  "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -272,
+        -272
+      ],
+      "id": "9fea6979-3059-4cd9-aba6-67f2c372bf5f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4o-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -64
+      ],
+      "id": "67612ce2-6c64-4abd-80f6-869bae450ebb",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "e4DN3SOI9elovs0s",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const aiOutput = $input.first().json.output;                                                \n                                                                                              \n  // Try to extract JSON from the AI response                                                 \n  let nutritionData;                                                                          \n                                                                                              \n  try {                                                                                       \n    // If the AI returned pure JSON                                                           \n    nutritionData = JSON.parse(aiOutput);                                                     \n  } catch (e) {                                                                               \n    // If the AI wrapped it in markdown code blocks                                           \n    const jsonMatch = aiOutput.match(/```json\\s*(\\{[\\s\\S]*?\\})\\s*```/) ||                     \n                      aiOutput.match(/(\\{[\\s\\S]*?\\})/);                                       \n                                                                                              \n    if (jsonMatch) {                                                                          \n      nutritionData = JSON.parse(jsonMatch[1]);                                               \n    } else {                                                                                  \n      throw new Error('Could not parse AI response');                                         \n    }                                                                                         \n  }                                                                                           \n                                                                                              \n  // Get user and chat info from original Telegram message                                    \n  const telegramData = $('Telegram Trigger').first().json;                                    \n                                                                                              \n  return {                                                                                    \n    json: {                                                                                   \n      nutrition_data: nutritionData,                                                          \n      user_id: telegramData.message.from.id,                                                  \n      chat_id: telegramData.message.chat.id,                                                  \n      message_type: 'text'                                                                    \n    }                                                                                         \n  }; "
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -272
+      ],
+      "id": "3e6701c5-7c95-4a82-9b7a-9190f7ce0fa6",
+      "name": "Parse AI response"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Parse AI response').item.json.chat_id }}",
+        "text": "={{ \"✅ Meal logged successfully!\\n\\n\" + $('Parse AI response').item.json.nutrition_data.meal_name + \"\\n\\n📊 Nutrition:\\n• Calories: \" + $('Parse AI response').item.json.nutrition_data.calories + \"\\n• Protein: \" + $('Parse AI response').item.json.nutrition_data.protein_g + \"g\\n• Carbs: \" + $('Parse AI response').item.json.nutrition_data.carbs_g + \"g\\n• Fat: \" + $('Parse AI response').item.json.nutrition_data.fat_g + \"g\" }}",
+        "additionalFields": {}
+      },
+      "id": "telegram-send-node",
+      "name": "Send confirmation",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        496,
+        -272
+      ],
+      "webhookId": "fadbdc45-1b85-4a86-8232-b748562bdaff",
+      "credentials": {
+        "telegramApi": {
+          "id": "P5klJPvL0baZPhe8",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8nmcptutorial.vercel.app/api/webhook/telegram",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer b421250a7b46b9394245dcf56a061db65da47c9dd9450f5c140f893d4aed321b"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  telegram_chat_id: $json.chat_id,\n  title: $json.nutrition_data.meal_name,\n  description: $json.nutrition_data.meal_description,\n  source: 'telegram_text',\n  meal_type: 'snack',\n  calories: $json.nutrition_data.calories,\n  protein: $json.nutrition_data.protein_g,\n  carbs: $json.nutrition_data.carbs_g,\n  fat: $json.nutrition_data.fat_g\n} }}",
+        "options": {}
+      },
+      "id": "webhook-http-request",
+      "name": "Call Webhook API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        -272
+      ]
+    }
+  ],
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 999915033,
+          "message": {
+            "message_id": 2,
+            "from": {
+              "id": 726543105,
+              "is_bot": false,
+              "first_name": "Kentroccas",
+              "username": "fartface2000",
+              "language_code": "en"
+            },
+            "chat": {
+              "id": 726543105,
+              "first_name": "Kentroccas",
+              "username": "fartface2000",
+              "type": "private"
+            },
+            "date": 1768178117,
+            "text": "I ate a chicken salad sandwich"
+          }
+        }
+      }
+    ],
+    "AI Agent": [
+      {
+        "json": {
+          "output": "{\n  \"meal_name\": \"Chicken Salad Sandwich\",\n  \"calories\": 450,\n  \"protein_g\": 30,\n  \"carbs_g\": 40,\n  \"fat_g\": 18,\n  \"meal_description\": \"I ate a chicken salad sandwich\"\n}"
+        }
+      }
+    ],
+    "Parse AI response": [
+      {
+        "json": {
+          "nutrition_data": {
+            "meal_name": "Chicken Salad Sandwich",
+            "calories": 450,
+            "protein_g": 30,
+            "carbs_g": 40,
+            "fat_g": 18,
+            "meal_description": "I ate a chicken salad sandwich"
+          },
+          "user_id": 726543105,
+          "chat_id": 726543105,
+          "message_type": "text"
+        }
+      }
+    ],
+    "Insert into Supabase": [
+      {
+        "json": {
+          "id": 9,
+          "created_at": "2026-01-12T01:49:14.127311+00:00",
+          "user_id": 726543105,
+          "chat_id": 726543105,
+          "meal_name": "Chicken Salad Sandwich",
+          "meal_description": "I ate a chicken salad sandwich",
+          "calories": 450,
+          "protein_g": 30,
+          "carbs_g": 40,
+          "fat_g": 18,
+          "message_type": "text"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse AI response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI response": {
+      "main": [
+        [
+          {
+            "node": "Call Webhook API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Webhook API": {
+      "main": [
+        [
+          {
+            "node": "Send confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "6703a132-16a9-49a3-b92e-2fac8232c7c8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a81dcd2d44df3e975b6dcacf432a5d558c028bd675aee6ba7d176f1b11b4cab7"
+  },
+  "id": "n0yIHfgxCqbMDE0Y",
+  "tags": []
+}
