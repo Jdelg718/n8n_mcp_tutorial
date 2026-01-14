@@ -36,11 +36,23 @@ export default function MealForm({ action, initialData }: MealFormProps) {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [aiError, setAiError] = useState<string | null>(null)
 
-  // Get current datetime in local timezone for datetime-local input
-  const now = new Date()
-  const localDatetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-    .toISOString()
-    .slice(0, 16)
+
+
+  // State for datetime input to handle client-side timezone conversion correctly
+  const [loggedAt, setLoggedAt] = useState('')
+
+  useEffect(() => {
+    // This runs only on client, ensuring correct browser timezone
+    const getLocalDatetime = (isoString?: string) => {
+      const d = isoString ? new Date(isoString) : new Date()
+      // Subtract timezone offset to get local time in ISO format
+      // getTimezoneOffset returns positive minutes for zones behind UTC (e.g. EST is 300)
+      const offsetMs = d.getTimezoneOffset() * 60000
+      return new Date(d.getTime() - offsetMs).toISOString().slice(0, 16)
+    }
+
+    setLoggedAt(getLocalDatetime(initialData?.logged_at))
+  }, [initialData?.logged_at])
 
   // Initialize nutrition data from initialData if in edit mode
   useEffect(() => {
@@ -60,8 +72,8 @@ export default function MealForm({ action, initialData }: MealFormProps) {
           ? initialData.ai_confidence >= 0.8
             ? 'high'
             : initialData.ai_confidence >= 0.6
-            ? 'medium'
-            : 'low'
+              ? 'medium'
+              : 'low'
           : 'medium',
         notes: '',
       })
@@ -189,7 +201,8 @@ export default function MealForm({ action, initialData }: MealFormProps) {
           name="logged_at"
           type="datetime-local"
           required
-          defaultValue={initialData?.logged_at || localDatetime}
+          value={loggedAt}
+          onChange={(e) => setLoggedAt(e.target.value)}
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 text-gray-900 bg-white"
         />
         {state?.errors?.logged_at && (

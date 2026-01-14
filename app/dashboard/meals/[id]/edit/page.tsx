@@ -21,18 +21,15 @@ export default async function EditMealPage({
     notFound()
   }
 
-  // Convert logged_at to datetime-local format
-  const loggedAt = new Date(meal.logged_at)
-  const localDatetime = new Date(loggedAt.getTime() - loggedAt.getTimezoneOffset() * 60000)
-    .toISOString()
-    .slice(0, 16)
+  // Pass raw UTC timestamp to client component for local conversion
+  const loggedAt = new Date(meal.logged_at).toISOString()
 
   // Prepare initial data for form
   const initialData = {
     title: meal.title,
     description: meal.description || '',
     meal_type: meal.meal_type,
-    logged_at: localDatetime,
+    logged_at: loggedAt,
     photo_url: meal.photo_url || '',
     calories: meal.calories ?? undefined,
     protein: meal.protein ?? undefined,
