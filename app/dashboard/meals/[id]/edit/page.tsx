@@ -45,18 +45,20 @@ export default async function EditMealPage({
   const updateMealWithId = updateMeal.bind(null, id)
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-5xl mx-auto px-4 py-8">
       <div className="mb-6">
         <Link
           href="/dashboard/meals"
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-sm text-[var(--color-brand)] hover:text-[var(--color-brand-hover)]"
         >
           ← Back to Meals
         </Link>
       </div>
 
-      <div className="bg-white shadow rounded-lg p-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Meal</h1>
+      <div>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Edit Meal</h1>
+        </div>
         <MealForm action={updateMealWithId} initialData={initialData} />
       </div>
     </div>

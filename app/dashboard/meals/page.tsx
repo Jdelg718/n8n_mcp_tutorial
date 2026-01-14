@@ -66,26 +66,29 @@ export default async function MealsPage({
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="mb-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">My Meals</h1>
+    <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">My Meals</h1>
+          <p className="text-[var(--color-text-secondary)] mt-1">Track and manage your meal history</p>
+        </div>
         <Link
           href="/dashboard/meals/new"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium"
+          className="btn btn-primary"
         >
-          Log New Meal
+          + Log New Meal
         </Link>
       </div>
 
       <MealFilters />
 
       {/* Results summary */}
-      <div className="mb-4">
-        <p className="text-sm text-gray-600">
+      <div className="mb-4 pl-1">
+        <p className="text-sm text-[var(--color-text-secondary)]">
           {total > 0 ? (
             <>
-              Showing <span className="font-medium">{startIndex}-{endIndex}</span> of{' '}
-              <span className="font-medium">{total}</span> meal{total !== 1 ? 's' : ''}{getFilterSummary()}
+              Showing <span className="font-medium text-[var(--color-text-primary)]">{startIndex}-{endIndex}</span> of{' '}
+              <span className="font-medium text-[var(--color-text-primary)]">{total}</span> meal{total !== 1 ? 's' : ''}{getFilterSummary()}
             </>
           ) : (
             <>No meals found{getFilterSummary()}</>
@@ -94,15 +97,15 @@ export default async function MealsPage({
       </div>
 
       {mealsList.length === 0 ? (
-        <div className="bg-white shadow rounded-lg p-12 text-center">
-          <p className="text-gray-500 mb-4">
+        <div className="card p-12 text-center">
+          <p className="text-[var(--color-text-secondary)] mb-6">
             {filters.dateRange || filters.mealType || filters.search
               ? 'No meals found matching your filters'
               : 'No meals logged yet'}
           </p>
           <Link
             href="/dashboard/meals/new"
-            className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium"
+            className="btn btn-primary"
           >
             {filters.dateRange || filters.mealType || filters.search
               ? 'Clear Filters'
@@ -110,13 +113,13 @@ export default async function MealsPage({
           </Link>
         </div>
       ) : (
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <ul className="divide-y divide-gray-200">
+        <div className="card overflow-hidden p-0">
+          <ul className="divide-y divide-gray-100">
             {mealsList.map((meal) => (
-              <li key={meal.id} className="p-6 hover:bg-gray-50">
+              <li key={meal.id} className="p-4 hover:bg-gray-50/80 transition-colors">
                 <div className="flex gap-4 items-start">
                   {meal.photo_url && (
-                    <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200">
+                    <div className="relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden border border-gray-100 bg-gray-50">
                       <Image
                         src={meal.photo_url}
                         alt={meal.title}
@@ -125,68 +128,78 @@ export default async function MealsPage({
                       />
                     </div>
                   )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {meal.title}
-                    </h3>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-base font-semibold text-[var(--color-text-primary)] truncate pr-4">
+                          {meal.title}
+                        </h3>
+                        <div className="mt-1 flex items-center gap-3 text-sm text-[var(--color-text-secondary)]">
+                          <span className="capitalize inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                            {meal.meal_type}
+                          </span>
+                          <span className="text-gray-300">•</span>
+                          <LocalDateTime date={meal.logged_at} className="text-xs" />
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {/* We can make actions always visible on mobile, hide on desktop until hover? No, keep simple */}
+                      </div>
+                    </div>
+
                     {meal.description && (
-                      <p className="mt-1 text-sm text-gray-600">{meal.description}</p>
+                      <p className="mt-2 text-sm text-[var(--color-text-secondary)] line-clamp-1">{meal.description}</p>
                     )}
 
-                    {/* Nutrition summary */}
+                    {/* Nutrition summary - Compact */}
                     {meal.calories !== null && (
-                      <div className="mt-2 text-sm text-gray-700 font-medium">
-                        {meal.calories} cal
-                        {meal.protein !== null && ` | ${Math.round(meal.protein)}g protein`}
-                        {meal.carbs !== null && ` | ${Math.round(meal.carbs)}g carbs`}
-                        {meal.fat !== null && ` | ${Math.round(meal.fat)}g fat`}
+                      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-text-secondary)] font-medium">
+                        <span className="text-[var(--color-text-primary)]">{meal.calories} kcal</span>
+                        {meal.protein !== null && <span className="text-slate-500">P: {Math.round(meal.protein)}g</span>}
+                        {meal.carbs !== null && <span className="text-slate-500">C: {Math.round(meal.carbs)}g</span>}
+                        {meal.fat !== null && <span className="text-slate-500">F: {Math.round(meal.fat)}g</span>}
                       </div>
                     )}
 
-                    <div className="mt-2 flex items-center gap-4 text-sm text-gray-500">
-                      <span className="capitalize inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {meal.meal_type}
-                      </span>
-                      <LocalDateTime date={meal.logged_at} />
+                    <div className="mt-3 flex items-center justify-between">
+                      {/* Badges */}
+                      <div className="flex gap-2">
+                        {meal.ai_confidence !== null && (
+                          <span
+                            className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium border ${meal.ai_confidence >= 0.8
+                              ? 'bg-green-50 text-green-700 border-green-100'
+                              : meal.ai_confidence >= 0.6
+                                ? 'bg-yellow-50 text-yellow-700 border-yellow-100'
+                                : 'bg-red-50 text-red-700 border-red-100'
+                              }`}
+                          >
+                            AI {Math.round(meal.ai_confidence * 100)}%
+                          </span>
+                        )}
+                      </div>
 
-                      {/* AI confidence badge */}
-                      {meal.ai_confidence !== null && (
-                        <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${meal.ai_confidence >= 0.8
-                            ? 'bg-green-100 text-green-800'
-                            : meal.ai_confidence >= 0.6
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : 'bg-red-100 text-red-800'
-                            }`}
+                      {/* Edit/Delete - Always visible now for usability */}
+                      <div className="flex items-center gap-3">
+                        <Link
+                          href={`/dashboard/meals/${meal.id}/edit`}
+                          className="text-xs font-medium text-[var(--color-brand)] hover:text-[var(--color-brand-hover)]"
                         >
-                          AI {Math.round(meal.ai_confidence * 100)}%
-                        </span>
-                      )}
-
-                      {/* Manual entry badge */}
-                      {meal.calories !== null && meal.ai_confidence === null && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                          Manual
-                        </span>
-                      )}
+                          Edit
+                        </Link>
+                        <DeleteButton mealId={meal.id} />
+                      </div>
                     </div>
 
-                    {/* Edit and Delete actions */}
-                    <div className="mt-3 flex items-center gap-4">
-                      <Link
-                        href={`/dashboard/meals/${meal.id}/edit`}
-                        className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                      >
-                        Edit
-                      </Link>
-                      <DeleteButton mealId={meal.id} />
-                    </div>
                   </div>
                 </div>
               </li>
             ))}
           </ul>
-          <Pagination page={currentPage} totalPages={totalPages} />
+          <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+            <Pagination page={currentPage} totalPages={totalPages} />
+          </div>
         </div>
       )}
     </div>

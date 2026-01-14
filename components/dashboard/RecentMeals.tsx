@@ -16,9 +16,9 @@ export async function RecentMeals() {
   const meals = result as RecentMeal[]
 
   return (
-    <div className="bg-white shadow rounded-lg p-6">
+    <div className="card">
       <div className="flex justify-between items-baseline mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Recent Meals</h2>
+        <h2 className="text-lg font-bold text-[var(--color-text-primary)]">Recent Meals</h2>
         <Link
           href="/dashboard/meals"
           className="text-sm text-blue-600 hover:text-blue-800 font-medium"

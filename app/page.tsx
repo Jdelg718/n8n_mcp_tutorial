@@ -63,81 +63,89 @@ export default async function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-40 pb-32 gradient-mesh-bg overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="relative pt-32 pb-24 overflow-hidden">
+        {/* Background Gradients */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-blue-50/50 to-transparent"></div>
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-100/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+          <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/4"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Hero Content */}
-            <div className="space-y-8 relative z-10">
-              <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 animate-fade-in">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span className="text-sm font-medium text-gray-700">AI-Powered Nutrition Tracking</span>
+            <div className="space-y-8 text-center lg:text-left">
+              <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 animate-fade-in mx-auto lg:mx-0">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                <span className="text-xs font-semibold uppercase tracking-wide">AI-Powered Nutrition Tracking</span>
               </div>
 
-              <h1 className="animate-fade-in-up delay-100">
-                <span className="text-stripe-red">Track your</span>{' '}
-                <span className="text-stripe-dark">nutrition</span>{' '}
-                <span className="gradient-text-blue">with AI</span>{' '}
-                <span className="text-stripe-dark">intelligence</span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[var(--color-text-primary)] leading-[1.15] animate-fade-in-up delay-100">
+                Data-driven <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">nutrition insights</span>
               </h1>
 
-              <p className="text-xl text-gray-600 leading-relaxed text-balance animate-fade-in-up delay-200">
-                Transform your health journey with intelligent meal tracking, instant AI analysis,
-                and personalized insights that help you reach your nutrition goals.
+              <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-fade-in-up delay-200">
+                Transform your health journey with intelligent meal tracking.
+                Snap a photo, get instant nutritional analysis, and visualize your progress.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-300">
-                <Link href="/signup" className="btn btn-primary text-lg px-8 py-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up delay-300">
+                <Link href="/signup" className="btn btn-primary px-8 py-3 text-base">
                   Start tracking free
-                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
                 </Link>
-                <Link href="#features" className="btn btn-secondary text-lg px-8 py-4">
-                  See how it works
+                <Link href="#features" className="btn btn-secondary px-8 py-3 text-base">
+                  How it works
                 </Link>
               </div>
 
-              <div className="flex items-center space-x-8 text-sm text-gray-600 animate-fade-in delay-400">
-                <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>No credit card</span>
+              <div className="pt-4 flex items-center justify-center lg:justify-start gap-6 text-sm text-[var(--color-text-secondary)] animate-fade-in delay-400">
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                  <span>No credit card required</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Free forever</span>
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                  <span>Free tier available</span>
                 </div>
               </div>
             </div>
 
             {/* Hero Visual - Dashboard Preview */}
-            <div className="relative animate-scale-in delay-200">
-              <div className="glass-card rounded-2xl p-8 space-y-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">Today's Nutrition</h3>
-                  <span className="text-sm text-gray-500">Jan 12, 2026</span>
+            <div className="relative animate-scale-in delay-200 hidden lg:block">
+              {/* Decorative blobs */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-purple-100/50 to-blue-100/50 rounded-full blur-3xl -z-10"></div>
+
+              {/* Main Card */}
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-6 rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
+                <div className="flex items-center justify-between border-b border-gray-50 pb-4">
+                  <div>
+                    <div className="text-sm font-semibold text-gray-900">Today's Nutrition</div>
+                    <div className="text-xs text-gray-500">Jan 12, 2026</div>
+                  </div>
+                  <div className="h-8 w-8 rounded-full bg-gray-100"></div>
                 </div>
 
                 {/* Mock Progress Bars */}
                 <div className="space-y-4">
                   {[
-                    { label: 'Calories', value: '1,847', target: '2,000', percent: 92, color: 'bg-gradient-purple' },
-                    { label: 'Protein', value: '142g', target: '150g', percent: 95, color: 'bg-gradient-blue' },
-                    { label: 'Carbs', value: '205g', target: '250g', percent: 82, color: 'bg-gradient-ocean' },
+                    { label: 'Calories', value: '1,847', target: '2,000', percent: 92, color: 'bg-blue-500' },
+                    { label: 'Protein', value: '142g', target: '150g', percent: 95, color: 'bg-indigo-500' },
+                    { label: 'Carbs', value: '205g', target: '250g', percent: 82, color: 'bg-teal-400' },
                   ].map((item, i) => (
-                    <div key={i} className="space-y-2" style={{ animationDelay: `${0.5 + i * 0.1}s` }}>
-                      <div className="flex justify-between text-sm">
-                        <span className="font-medium">{item.label}</span>
-                        <span className="text-gray-600">
-                          {item.value} / {item.target}
+                    <div key={i} className="space-y-1.5">
+                      <div className="flex justify-between text-xs font-medium">
+                        <span className="text-gray-700">{item.label}</span>
+                        <span className="text-gray-500">
+                          {item.value} <span className="text-gray-300">/</span> {item.target}
                         </span>
                       </div>
-                      <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div
-                          className={`h-full ${item.color} transition-all duration-1000`}
+                          className={`h-full ${item.color}`}
                           style={{ width: `${item.percent}%` }}
                         />
                       </div>
@@ -145,22 +153,27 @@ export default async function LandingPage() {
                   ))}
                 </div>
 
-                <div className="pt-4 border-t border-gray-100">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">3 meals logged today</span>
-                    <span className="text-green-600 font-medium flex items-center">
-                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      On track
-                    </span>
+                <div className="pt-2">
+                  <div className="p-3 bg-green-50 rounded-lg flex items-center gap-3 text-xs text-green-700 font-medium">
+                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                    You're hitting your protein goals perfectly!
                   </div>
                 </div>
               </div>
 
-              {/* Floating elements */}
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-purple-200 rounded-full blur-3xl opacity-50 animate-pulse"></div>
-              <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-blue-200 rounded-full blur-3xl opacity-50 animate-pulse" style={{ animationDelay: '1s' }}></div>
+              {/* Floating Card */}
+              <div className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-lg border border-gray-100 p-4 w-48 rotate-[3deg] hover:rotate-0 transition-transform duration-500 delay-100">
+                <div className="flex gap-3 items-center mb-2">
+                  <div className="w-10 h-10 rounded bg-gray-100 flex-shrink-0"></div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-semibold truncate">Grilled Salmon</div>
+                    <div className="text-[10px] text-gray-500">Lunch • 12:30 PM</div>
+                  </div>
+                </div>
+                <div className="text-xs text-gray-600 font-medium">
+                  High Protein Meal 💪
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -151,154 +151,178 @@ export default function MealForm({ action, initialData }: MealFormProps) {
   }
 
   return (
-    <form action={formAction} className="space-y-6">
-      <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-          Meal Name *
-        </label>
-        <input
-          id="title"
-          name="title"
-          type="text"
-          required
-          defaultValue={initialData?.title}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 text-gray-900 bg-white"
-          placeholder="e.g., Chicken salad, Protein shake"
-        />
-        {state?.errors?.title && (
-          <p className="mt-1 text-sm text-red-600">{state.errors.title[0]}</p>
-        )}
-      </div>
+    <form action={formAction} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Left Column: Meal Details */}
+      <div className="lg:col-span-2 space-y-6">
+        <div className="card space-y-6">
+          <div className="border-b border-gray-100 pb-4">
+            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Meal Details</h3>
+          </div>
 
-      <div>
-        <label htmlFor="meal_type" className="block text-sm font-medium text-gray-700">
-          Meal Type *
-        </label>
-        <select
-          id="meal_type"
-          name="meal_type"
-          required
-          defaultValue={initialData?.meal_type}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 text-gray-900 bg-white"
-        >
-          <option value="">Select a meal type</option>
-          <option value="breakfast">Breakfast</option>
-          <option value="lunch">Lunch</option>
-          <option value="dinner">Dinner</option>
-          <option value="snack">Snack</option>
-        </select>
-        {state?.errors?.meal_type && (
-          <p className="mt-1 text-sm text-red-600">{state.errors.meal_type[0]}</p>
-        )}
-      </div>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1">
+                Meal Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                required
+                defaultValue={initialData?.title}
+                placeholder="e.g., Grilled Chicken Salad"
+              />
+              {state?.errors?.title && (
+                <p className="mt-1 text-sm text-red-600">{state.errors.title[0]}</p>
+              )}
+            </div>
 
-      <div>
-        <label htmlFor="logged_at" className="block text-sm font-medium text-gray-700">
-          Date & Time *
-        </label>
-        <input
-          id="logged_at"
-          name="logged_at"
-          type="datetime-local"
-          required
-          value={loggedAt}
-          onChange={(e) => setLoggedAt(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 text-gray-900 bg-white"
-        />
-        {state?.errors?.logged_at && (
-          <p className="mt-1 text-sm text-red-600">{state.errors.logged_at[0]}</p>
-        )}
-      </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="meal_type" className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1">
+                  Meal Type <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="meal_type"
+                  name="meal_type"
+                  required
+                  defaultValue={initialData?.meal_type}
+                >
+                  <option value="">Select type...</option>
+                  <option value="breakfast">Breakfast</option>
+                  <option value="lunch">Lunch</option>
+                  <option value="dinner">Dinner</option>
+                  <option value="snack">Snack</option>
+                </select>
+                {state?.errors?.meal_type && (
+                  <p className="mt-1 text-sm text-red-600">{state.errors.meal_type[0]}</p>
+                )}
+              </div>
 
-      <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-          Description (optional)
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          rows={3}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 text-gray-900 bg-white"
-          placeholder="Any notes about this meal..."
-        />
-        {state?.errors?.description && (
-          <p className="mt-1 text-sm text-red-600">{state.errors.description[0]}</p>
-        )}
-      </div>
+              <div>
+                <label htmlFor="logged_at" className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1">
+                  Time <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="logged_at"
+                  name="logged_at"
+                  type="datetime-local"
+                  required
+                  value={loggedAt}
+                  onChange={(e) => setLoggedAt(e.target.value)}
+                />
+                {state?.errors?.logged_at && (
+                  <p className="mt-1 text-sm text-red-600">{state.errors.logged_at[0]}</p>
+                )}
+              </div>
+            </div>
 
-      <ImageUpload
-        value={photoUrl}
-        onChange={setPhotoUrl}
-        disabled={isPending}
-      />
-      <input type="hidden" name="photo_url" value={photoUrl || ''} />
-      {state?.errors?.photo_url && (
-        <p className="text-sm text-red-600">{state.errors.photo_url[0]}</p>
-      )}
-
-      {/* AI Analysis Section */}
-      <div className="border-t pt-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-gray-900">Nutrition Information</h3>
-          <button
-            type="button"
-            onClick={handleAIAnalysis}
-            disabled={isAnalyzing || (!description && !photoUrl) || isPending}
-            className="px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isAnalyzing ? 'Analyzing...' : 'Analyze with AI'}
-          </button>
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1">
+                Notes
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                rows={3}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Add any details about ingredients or portion size..."
+              />
+              {state?.errors?.description && (
+                <p className="mt-1 text-sm text-red-600">{state.errors.description[0]}</p>
+              )}
+            </div>
+          </div>
         </div>
 
-        {aiError && (
-          <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-600">
-            {aiError}
-          </div>
+        {/* Nutrition Manual Override Section (hidden unless expanded? or just show inputs) */}
+        {/* We keep the hidden inputs for form submission */}
+        {nutritionData && (
+          <>
+            <input type="hidden" name="calories" value={nutritionData.nutrition.calories} />
+            <input type="hidden" name="protein" value={nutritionData.nutrition.protein_g} />
+            <input type="hidden" name="carbs" value={nutritionData.nutrition.carbs_g} />
+            <input type="hidden" name="fat" value={nutritionData.nutrition.fat_g} />
+            <input type="hidden" name="fiber" value={nutritionData.nutrition.fiber_g} />
+            <input type="hidden" name="sugar" value={nutritionData.nutrition.sugar_g} />
+            <input type="hidden" name="sodium" value={nutritionData.nutrition.sodium_mg} />
+            <input type="hidden" name="ai_confidence" value={getConfidenceScore(nutritionData.confidence)} />
+          </>
         )}
 
-        {nutritionData && (
-          <NutritionDisplay
-            nutrition={nutritionData}
-            onUpdate={handleNutritionUpdate}
-          />
+        {state?.errors?._form && (
+          <p className="text-sm text-red-600 bg-red-50 p-3 rounded-md border border-red-100">{state.errors._form[0]}</p>
         )}
+
+        <div className="flex gap-4 pt-2">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="btn btn-primary flex-1 py-2.5"
+          >
+            {isPending ? 'Saving...' : initialData ? 'Save Changes' : 'Log Meal'}
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push('/dashboard/meals')}
+            className="btn btn-secondary px-6"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
 
-      {/* Hidden fields for nutrition data */}
-      {nutritionData && (
-        <>
-          <input type="hidden" name="calories" value={nutritionData.nutrition.calories} />
-          <input type="hidden" name="protein" value={nutritionData.nutrition.protein_g} />
-          <input type="hidden" name="carbs" value={nutritionData.nutrition.carbs_g} />
-          <input type="hidden" name="fat" value={nutritionData.nutrition.fat_g} />
-          <input type="hidden" name="fiber" value={nutritionData.nutrition.fiber_g} />
-          <input type="hidden" name="sugar" value={nutritionData.nutrition.sugar_g} />
-          <input type="hidden" name="sodium" value={nutritionData.nutrition.sodium_mg} />
-          <input type="hidden" name="ai_confidence" value={getConfidenceScore(nutritionData.confidence)} />
-        </>
-      )}
+      {/* Right Column: AI & Analysis */}
+      <div className="space-y-6">
+        <div className="card space-y-4">
+          <h3 className="text-sm font-bold text-[var(--color-text-primary)] uppercase tracking-wider">Analysis</h3>
 
-      {state?.errors?._form && (
-        <p className="text-sm text-red-600">{state.errors._form[0]}</p>
-      )}
+          <div className="space-y-4">
+            <ImageUpload
+              value={photoUrl}
+              onChange={setPhotoUrl}
+              disabled={isPending}
+            />
+            <input type="hidden" name="photo_url" value={photoUrl || ''} />
+            {state?.errors?.photo_url && (
+              <p className="text-sm text-red-600">{state.errors.photo_url[0]}</p>
+            )}
 
-      <div className="flex gap-3">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isPending ? 'Saving...' : initialData ? 'Update Meal' : 'Save Meal'}
-        </button>
-        <button
-          type="button"
-          onClick={() => router.push('/dashboard/meals')}
-          className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
-        >
-          Cancel
-        </button>
+            <button
+              type="button"
+              onClick={handleAIAnalysis}
+              disabled={isAnalyzing || (!description && !photoUrl) || isPending}
+              className="w-full btn btn-secondary justify-center text-[var(--color-brand)] border-[var(--color-brand)]/20 hover:bg-[var(--color-brand)]/5"
+            >
+              {isAnalyzing ? (
+                <span className="flex items-center gap-2">
+                  <span className="animate-spin text-lg">✨</span> Analyzing...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <span className="text-lg">✨</span> Analyze with AI
+                </span>
+              )}
+            </button>
+
+            {aiError && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-md text-xs text-red-600">
+                {aiError}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Nutrition Result Card */}
+        {nutritionData && (
+          <div className="card">
+            <NutritionDisplay
+              nutrition={nutritionData}
+              onUpdate={handleNutritionUpdate}
+            />
+          </div>
+        )}
       </div>
     </form>
   )

@@ -42,9 +42,9 @@ export async function TodayTotals() {
   }
 
   return (
-    <div className="bg-white shadow rounded-lg p-6">
+    <div className="card">
       <div className="flex justify-between items-baseline mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Today's Nutrition</h2>
+        <h2 className="text-lg font-bold text-[var(--color-text-primary)]">Today's Nutrition</h2>
         <span className="text-sm text-gray-600">{totalMeals} meals logged</span>
       </div>
 

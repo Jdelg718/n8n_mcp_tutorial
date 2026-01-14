@@ -11,84 +11,70 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser()
 
   return (
-    <div className="min-h-screen gradient-mesh-bg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="mb-12 animate-fade-in-up">
-          <h1 className="text-5xl font-bold mb-3">
-            <span className="text-stripe-dark">Welcome back</span>
-          </h1>
-          <p className="text-gray-600 text-xl">{user?.email}</p>
+
+    <div className="min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* Header - Compact & Clean */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-[var(--color-text-primary)]">Overview</h1>
+            <p className="text-[var(--color-text-secondary)] mt-1">Welcome back, {user?.email}</p>
+          </div>
+
+          {/* Quick Actions Bar */}
+          <div className="flex gap-3">
+            <Link
+              href="/dashboard/meals/new"
+              className="btn btn-primary"
+            >
+              <span>+ Log Meal</span>
+            </Link>
+          </div>
         </div>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
-          {/* Today's Totals Card */}
-          <div className="animate-fade-in-up delay-100">
-            <TodayTotals />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Today's Totals - Takes 2/3 width on large screens */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Totals Section */}
+            <div className="mb-6">
+              <TodayTotals />
+            </div>
+
+            {/* Recent Meals Section */}
+            <div>
+              <RecentMeals />
+            </div>
           </div>
 
-          {/* Recent Meals Card */}
-          <div className="animate-fade-in-up delay-200">
-            <RecentMeals />
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="glass-card rounded-2xl p-10 animate-fade-in-up delay-300">
-          <h3 className="text-3xl font-bold mb-8 text-stripe-dark">Quick Actions</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link
-              href="/dashboard/meals/new"
-              className="group card p-8 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center space-y-4 border border-gray-100 hover:border-purple-200 hover:-translate-y-1 rounded-xl"
-            >
-              <div className="w-14 h-14 rounded-xl bg-gradient-purple flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform shadow-lg">
-                ✏️
+          {/* Sidebar / Quick Stats / Navigation */}
+          <div className="lg:col-span-1 space-y-6">
+            <div className="card">
+              <h3 className="text-lg font-semibold mb-4">Quick Navigation</h3>
+              <div className="space-y-2">
+                <Link href="/dashboard/meals" className="flex items-center justify-between p-3 rounded-md hover:bg-gray-50 transition-colors group">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">📋</span>
+                    <span className="font-medium text-sm text-[var(--color-text-primary)]">View All Meals</span>
+                  </div>
+                  <span className="text-gray-400 group-hover:text-gray-600">→</span>
+                </Link>
+                <Link href="/dashboard/analytics" className="flex items-center justify-between p-3 rounded-md hover:bg-gray-50 transition-colors group">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">📊</span>
+                    <span className="font-medium text-sm text-[var(--color-text-primary)]">Analytics</span>
+                  </div>
+                  <span className="text-gray-400 group-hover:text-gray-600">→</span>
+                </Link>
+                <Link href="/dashboard/profile" className="flex items-center justify-between p-3 rounded-md hover:bg-gray-50 transition-colors group">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">⚙️</span>
+                    <span className="font-medium text-sm text-[var(--color-text-primary)]">Settings</span>
+                  </div>
+                  <span className="text-gray-400 group-hover:text-gray-600">→</span>
+                </Link>
               </div>
-              <div>
-                <div className="font-bold text-gray-900 mb-1.5 text-lg">Log Meal</div>
-                <div className="text-sm text-gray-600">Add new entry</div>
-              </div>
-            </Link>
-
-            <Link
-              href="/dashboard/meals"
-              className="group card p-8 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center space-y-4 border border-gray-100 hover:border-blue-200 hover:-translate-y-1 rounded-xl"
-            >
-              <div className="w-14 h-14 rounded-xl bg-gradient-blue flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform shadow-lg">
-                📋
-              </div>
-              <div>
-                <div className="font-bold text-gray-900 mb-1.5 text-lg">View Meals</div>
-                <div className="text-sm text-gray-600">Browse history</div>
-              </div>
-            </Link>
-
-            <Link
-              href="/dashboard/analytics"
-              className="group card p-8 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center space-y-4 border border-gray-100 hover:border-cyan-200 hover:-translate-y-1 rounded-xl"
-            >
-              <div className="w-14 h-14 rounded-xl bg-gradient-ocean flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform shadow-lg">
-                📊
-              </div>
-              <div>
-                <div className="font-bold text-gray-900 mb-1.5 text-lg">Analytics</div>
-                <div className="text-sm text-gray-600">View insights</div>
-              </div>
-            </Link>
-
-            <Link
-              href="/dashboard/profile"
-              className="group card p-8 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center space-y-4 border border-gray-100 hover:border-gray-300 hover:-translate-y-1 rounded-xl"
-            >
-              <div className="w-14 h-14 rounded-xl bg-gray-200 flex items-center justify-center text-gray-700 text-2xl group-hover:scale-110 transition-transform shadow-lg">
-                ⚙️
-              </div>
-              <div>
-                <div className="font-bold text-gray-900 mb-1.5 text-lg">Settings</div>
-                <div className="text-sm text-gray-600">Manage profile</div>
-              </div>
-            </Link>
+            </div>
           </div>
         </div>
       </div>
