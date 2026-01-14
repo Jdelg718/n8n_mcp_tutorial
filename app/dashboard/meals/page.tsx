@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { format } from 'date-fns'
 import type { Meal } from '@/types/meal'
+import { LocalDateTime } from '@/components/LocalDateTime'
 import { DeleteButton } from '@/components/meals/DeleteButton'
 import { MealFilters } from '@/components/meals/MealFilters'
 import { Pagination } from '@/components/meals/Pagination'
@@ -147,18 +147,17 @@ export default async function MealsPage({
                       <span className="capitalize inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         {meal.meal_type}
                       </span>
-                      <span>{format(new Date(meal.logged_at), 'MMM d, yyyy h:mm a')}</span>
+                      <LocalDateTime date={meal.logged_at} />
 
                       {/* AI confidence badge */}
                       {meal.ai_confidence !== null && (
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                            meal.ai_confidence >= 0.8
-                              ? 'bg-green-100 text-green-800'
-                              : meal.ai_confidence >= 0.6
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${meal.ai_confidence >= 0.8
+                            ? 'bg-green-100 text-green-800'
+                            : meal.ai_confidence >= 0.6
                               ? 'bg-yellow-100 text-yellow-800'
                               : 'bg-red-100 text-red-800'
-                          }`}
+                            }`}
                         >
                           AI {Math.round(meal.ai_confidence * 100)}%
                         </span>
