@@ -4,7 +4,8 @@ import { z } from 'zod'
 
 // Webhook request schema
 const WebhookRequestSchema = z.object({
-  user_id: z.string().uuid('Invalid user ID format'),
+  user_id: z.string().uuid().optional(),
+  telegram_chat_id: z.union([z.string(), z.number()]).optional(),
   title: z.string().min(1, 'Title is required').max(100, 'Title too long'),
   description: z.string().optional(),
   meal_type: z.enum(['breakfast', 'lunch', 'dinner', 'snack']).optional(),
@@ -22,7 +23,9 @@ const WebhookRequestSchema = z.object({
   sugar: z.number().min(0).optional(),
   sodium: z.number().min(0).optional(),
   ai_confidence: z.number().min(0).max(1).optional(), // 0.0 to 1.0
-})
+}).refine(data => data.user_id || data.telegram_chat_id, {
+  message: "Either user_id or telegram_chat_id must be provided"
+});
 
 type WebhookRequest = z.infer<typeof WebhookRequestSchema>
 
@@ -71,6 +74,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data: WebhookRequest = validated.data
+    let targetUserId = data.user_id;
 
     // 3. Create Supabase admin client (bypasses RLS)
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -91,11 +95,34 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // 3.5 Lookup User ID if only telegram_chat_id is provided
+    if (!targetUserId && data.telegram_chat_id) {
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('telegram_chat_id', String(data.telegram_chat_id))
+        .single();
+
+      if (profileError || !profile) {
+        console.warn(`Telegram user lookup failed for chat_id: ${data.telegram_chat_id}`);
+        return NextResponse.json(
+          { error: 'User not registered. Please link your Telegram account on the website.' },
+          { status: 404 }
+        );
+      }
+
+      targetUserId = profile.id;
+    }
+
+    if (!targetUserId) {
+      return NextResponse.json({ error: 'User identification failed' }, { status: 400 });
+    }
+
     // 4. Insert meal log with admin client
     const { data: meal, error } = await supabase
       .from('meal_logs')
       .insert({
-        user_id: data.user_id,
+        user_id: targetUserId,
         title: data.title,
         description: data.description || null,
         meal_type: data.meal_type || 'snack', // Default to snack if not provided

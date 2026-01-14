@@ -114,7 +114,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ {\n  user_id: '88ce83b5-67e8-4960-8441-5da9aa1b5b10',\n  title: $json.nutrition_data.meal_name,\n  description: $json.nutrition_data.meal_description,\n  source: 'telegram_text',\n  meal_type: 'snack',\n  calories: $json.nutrition_data.calories,\n  protein: $json.nutrition_data.protein_g,\n  carbs: $json.nutrition_data.carbs_g,\n  fat: $json.nutrition_data.fat_g\n} }}",
+        "jsonBody": "={{ {\n  telegram_chat_id: $json.chat_id,\n  title: $json.nutrition_data.meal_name,\n  description: $json.nutrition_data.meal_description,\n  source: 'telegram_text',\n  meal_type: 'snack',\n  calories: $json.nutrition_data.calories,\n  protein: $json.nutrition_data.protein_g,\n  carbs: $json.nutrition_data.carbs_g,\n  fat: $json.nutrition_data.fat_g\n} }}",
         "options": {}
       },
       "id": "webhook-http-request",
