@@ -1,29 +1,45 @@
 'use client'
 
-import { format } from 'date-fns'
+import { useEffect, useState } from 'react'
 
 interface LocalDateTimeProps {
     date: string | Date
-    formatString?: string
+    formatOptions?: Intl.DateTimeFormatOptions
     className?: string
+}
+
+const defaultFormatOptions: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
 }
 
 /**
  * Client-side date/time formatter that displays dates in the user's local timezone.
- * Use this instead of format() in server components to ensure proper timezone handling.
+ * Uses native toLocaleString() to ensure proper browser timezone handling.
+ * Renders a placeholder during SSR to avoid hydration mismatch.
  */
 export function LocalDateTime({
     date,
-    formatString = 'MMM d, yyyy h:mm a',
+    formatOptions = defaultFormatOptions,
     className
 }: LocalDateTimeProps) {
-    const dateObj = typeof date === 'string' ? new Date(date) : date
+    const [formattedDate, setFormattedDate] = useState<string>('')
 
-    return (
-        <span className={className}>
-            {format(dateObj, formatString)}
-        </span>
-    )
+    useEffect(() => {
+        const dateObj = typeof date === 'string' ? new Date(date) : date
+        setFormattedDate(dateObj.toLocaleString('en-US', formatOptions))
+    }, [date, formatOptions])
+
+    // Show nothing during SSR, then hydrate with correct local time
+    if (!formattedDate) {
+        return <span className={className}>--</span>
+    }
+
+    return <span className={className}>{formattedDate}</span>
 }
 
 /**
@@ -37,20 +53,30 @@ export function RelativeTime({
     date: string | Date
     className?: string
 }) {
-    const dateObj = typeof date === 'string' ? new Date(date) : date
-    const now = new Date()
-    const diff = now.getTime() - dateObj.getTime()
-    const minutes = Math.floor(diff / 60000)
-    const hours = Math.floor(diff / 3600000)
-    const days = Math.floor(diff / 86400000)
+    const [timeString, setTimeString] = useState<string>('')
 
-    let timeString: string
-    if (minutes < 1) timeString = 'Just now'
-    else if (minutes < 60) timeString = `${minutes}m ago`
-    else if (hours < 24) timeString = `${hours}h ago`
-    else if (days === 1) timeString = 'Yesterday'
-    else if (days < 7) timeString = `${days}d ago`
-    else timeString = dateObj.toLocaleDateString()
+    useEffect(() => {
+        const dateObj = typeof date === 'string' ? new Date(date) : date
+        const now = new Date()
+        const diff = now.getTime() - dateObj.getTime()
+        const minutes = Math.floor(diff / 60000)
+        const hours = Math.floor(diff / 3600000)
+        const days = Math.floor(diff / 86400000)
+
+        let result: string
+        if (minutes < 1) result = 'Just now'
+        else if (minutes < 60) result = `${minutes}m ago`
+        else if (hours < 24) result = `${hours}h ago`
+        else if (days === 1) result = 'Yesterday'
+        else if (days < 7) result = `${days}d ago`
+        else result = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+
+        setTimeString(result)
+    }, [date])
+
+    if (!timeString) {
+        return <span className={className}>--</span>
+    }
 
     return <span className={className}>{timeString}</span>
 }
