@@ -23,10 +23,13 @@
   - [x] Add goal type selector (weight loss, maintenance, muscle gain)
   - [x] Calculate personalized daily targets
   - [x] Update dashboard to use calculated goals instead of hardcoded values
-- [ ] Weight tracking over time
+- [x] Weight tracking over time
   - [x] Add weight entry functionality (schema ready)
-  - [ ] Create weight history chart
-  - [ ] Track progress toward weight goals
+  - [x] Create weight history chart
+  - [x] Track progress toward weight goals
+  - [x] Weight entry form with imperial/metric support
+  - [x] Stats cards for progress visualization
+  - [x] Interactive chart showing trends
 
 ## Phase 3: Enhanced Metrics & Data Points
 - [ ] Expand meal nutrition tracking

@@ -8,8 +8,7 @@ import { METRIC_LIMITS, AGE_LIMITS } from '@/lib/nutrition/constants'
 export const PhysicalMetricsSchema = z.object({
     weight_kg: z
         .number({
-            required_error: 'Weight is required',
-            invalid_type_error: 'Weight must be a number',
+            message: 'Weight must be a number',
         })
         .min(METRIC_LIMITS.weight.min, `Weight must be at least ${METRIC_LIMITS.weight.min}kg`)
         .max(METRIC_LIMITS.weight.max, `Weight must be less than ${METRIC_LIMITS.weight.max}kg`),
@@ -17,8 +16,7 @@ export const PhysicalMetricsSchema = z.object({
 
     height_cm: z
         .number({
-            required_error: 'Height is required',
-            invalid_type_error: 'Height must be a number',
+            message: 'Height must be a number',
         })
         .min(METRIC_LIMITS.height.min, `Height must be at least ${METRIC_LIMITS.height.min}cm`)
         .max(METRIC_LIMITS.height.max, `Height must be less than ${METRIC_LIMITS.height.max}cm`),
@@ -26,7 +24,7 @@ export const PhysicalMetricsSchema = z.object({
 
     birth_date: z
         .string({
-            required_error: 'Date of birth is required',
+            message: 'Date of birth is required',
         })
         .date('Invalid date format')
         .refine(
@@ -40,8 +38,7 @@ export const PhysicalMetricsSchema = z.object({
         ),
 
     gender: z.enum(['male', 'female', 'other'], {
-        required_error: 'Gender is required for nutrition calculations',
-        invalid_type_error: 'Invalid gender selection',
+        message: 'Gender is required for nutrition calculations',
     }),
 })
 
@@ -52,8 +49,7 @@ export const ActivityLevelSchema = z.object({
     activity_level: z.enum(
         ['sedentary', 'lightly_active', 'moderately_active', 'very_active', 'extra_active'],
         {
-            required_error: 'Activity level is required',
-            invalid_type_error: 'Invalid activity level',
+            message: 'Activity level is required',
         }
     ),
 })
@@ -63,13 +59,12 @@ export const ActivityLevelSchema = z.object({
  */
 export const GoalsSchema = z.object({
     goal_type: z.enum(['weight_loss', 'maintenance', 'muscle_gain'], {
-        required_error: 'Goal type is required',
-        invalid_type_error: 'Invalid goal type',
+        message: 'Goal type is required',
     }),
 
     target_weight_kg: z
         .number({
-            invalid_type_error: 'Target weight must be a number',
+            message: 'Target weight must be a number',
         })
         .min(METRIC_LIMITS.weight.min, `Target weight must be at least ${METRIC_LIMITS.weight.min}kg`)
         .max(METRIC_LIMITS.weight.max, `Target weight must be less than ${METRIC_LIMITS.weight.max}kg`)
@@ -104,8 +99,7 @@ export const CompleteOnboardingSchema = PhysicalMetricsSchema
 export const WeightEntrySchema = z.object({
     weight: z
         .number({
-            required_error: 'Weight is required',
-            invalid_type_error: 'Weight must be a number',
+            message: 'Weight must be a number',
         })
         .min(METRIC_LIMITS.weight.min, `Weight must be at least ${METRIC_LIMITS.weight.min}kg`)
         .max(METRIC_LIMITS.weight.max, `Weight must be less than ${METRIC_LIMITS.weight.max}kg`),

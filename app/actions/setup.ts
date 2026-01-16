@@ -125,7 +125,7 @@ export async function updateProfile(
         const { data: currentProfile, error: fetchError } = await supabase
             .from('profiles')
             .select(
-                'weight_kg, height_cm, birth_date, gender, activity_level, goal_type'
+                'weight_kg, height_cm, birth_date, gender, activity_level, goal_type, profile_completed'
             )
             .eq('id', user.id)
             .single()
