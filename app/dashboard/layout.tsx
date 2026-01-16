@@ -36,29 +36,36 @@ export default async function DashboardLayout({
                 />
                 <span className="text-xl font-semibold text-gray-900">Meal Tracker</span>
               </Link>
-              <div className="flex gap-4">
+              {/* Desktop Navigation */}
+              <div className="hidden md:flex gap-4">
                 <Link
                   href="/dashboard"
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
                 >
                   Dashboard
                 </Link>
                 <Link
                   href="/dashboard/meals"
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
                 >
                   Meals
                 </Link>
                 <Link
+                  href="/dashboard/weight"
+                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+                >
+                  ⚖️ Weight
+                </Link>
+                <Link
                   href="/dashboard/analytics"
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
                 >
                   Analytics
                 </Link>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">{user.email}</span>
+              <span className="hidden sm:block text-sm text-gray-600">{user.email}</span>
               <form action={signOut}>
                 <button
                   type="submit"
@@ -68,6 +75,33 @@ export default async function DashboardLayout({
                 </button>
               </form>
             </div>
+          </div>
+          {/* Mobile Navigation */}
+          <div className="md:hidden border-t border-gray-200 py-2 space-y-1">
+            <Link
+              href="/dashboard"
+              className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/dashboard/meals"
+              className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+            >
+              Meals
+            </Link>
+            <Link
+              href="/dashboard/weight"
+              className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+            >
+              ⚖️ Weight Tracking
+            </Link>
+            <Link
+              href="/dashboard/analytics"
+              className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+            >
+              Analytics
+            </Link>
           </div>
         </div>
       </nav>

@@ -1,8 +1,12 @@
-import { getTodayTotals } from '@/app/dashboard/actions'
+import { getTodayTotals, UserGoals } from '@/app/dashboard/actions'
 import { ProgressBar } from './ProgressBar'
 import Link from 'next/link'
 
-export async function TodayTotals() {
+type TodayTotalsProps = {
+  goals: UserGoals | null
+}
+
+export async function TodayTotals({ goals }: TodayTotalsProps) {
   const result = await getTodayTotals()
 
   if ('error' in result) {
@@ -33,8 +37,8 @@ export async function TodayTotals() {
     )
   }
 
-  // Hardcoded goals for v1 (Phase 7 will add user-customizable goals)
-  const goals = {
+  // Use goals from prop or fall back to hardcoded defaults
+  const nutritionGoals = goals || {
     calories: 2000,
     protein: 150,
     carbs: 250,
@@ -54,28 +58,28 @@ export async function TodayTotals() {
           <ProgressBar
             label="Calories"
             value={calories}
-            max={goals.calories}
+            max={nutritionGoals.calories}
             unit="kcal"
             color="blue"
           />
           <ProgressBar
             label="Protein"
             value={protein}
-            max={goals.protein}
+            max={nutritionGoals.protein}
             unit="g"
             color="purple"
           />
           <ProgressBar
             label="Carbs"
             value={carbs}
-            max={goals.carbs}
+            max={nutritionGoals.carbs}
             unit="g"
             color="orange"
           />
           <ProgressBar
             label="Fat"
             value={fat}
-            max={goals.fat}
+            max={nutritionGoals.fat}
             unit="g"
             color="yellow"
           />

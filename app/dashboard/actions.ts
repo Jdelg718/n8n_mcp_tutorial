@@ -106,3 +106,59 @@ export async function getRecentMeals(limit: number = 5): Promise<RecentMeal[] | 
 
   return (meals || []) as RecentMeal[]
 }
+
+export type UserGoals = {
+  calories: number
+  protein: number
+  carbs: number
+  fat: number
+  profileCompleted: boolean
+}
+
+/**
+ * Fetches user's personalized nutrition goals from their profile.
+ * Falls back to hardcoded defaults if profile is incomplete.
+ */
+export async function getUserGoals(): Promise<UserGoals | { error: string }> {
+  const supabase = await createClient()
+
+  // Check auth
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { error: 'Not authenticated' }
+  }
+
+  // Fetch profile with nutrition goals
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('daily_calorie_goal, daily_protein_goal, daily_carbs_goal, daily_fat_goal, profile_completed')
+    .eq('id', user.id)
+    .single()
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  // Default hardcoded goals (v1 fallback)
+  const defaultGoals: UserGoals = {
+    calories: 2000,
+    protein: 150,
+    carbs: 250,
+    fat: 67,
+    profileCompleted: false,
+  }
+
+  // If profile not completed or goals not set, return defaults
+  if (!profile || !profile.profile_completed || !profile.daily_calorie_goal) {
+    return defaultGoals
+  }
+
+  // Return calculated goals from database
+  return {
+    calories: Math.round(profile.daily_calorie_goal),
+    protein: Math.round(profile.daily_protein_goal),
+    carbs: Math.round(profile.daily_carbs_goal),
+    fat: Math.round(profile.daily_fat_goal),
+    profileCompleted: profile.profile_completed,
+  }
+}
